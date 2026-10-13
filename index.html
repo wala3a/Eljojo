@@ -2,11 +2,12 @@
 <html lang="en" dir="ltr" class="h-full w-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practice iron chemistry through short, interactive reaction challenges.">
     <title>Monorail of Jojo - Iron Chemistry Ultimate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -14,14 +15,14 @@
                 extend: {
                     colors: {
                         monorail: {
-                            orange: '#ff6b00',
-                            yellow: '#ffd000',
-                            blue: '#00e5ff',
-                            purple: '#a855f7',
-                            dark: '#05070a',
-                            panel: '#0f141f',
-                            card: '#161e2e',
-                            border: '#26334d'
+                            orange: 'var(--color-accent)',
+                            yellow: 'var(--color-amber)',
+                            blue: 'var(--color-teal)',
+                            purple: 'var(--color-ink-muted)',
+                            dark: 'var(--color-paper)',
+                            panel: 'var(--color-surface)',
+                            card: 'var(--color-surface-alt)',
+                            border: 'var(--color-rule)'
                         }
                     }
                 }
@@ -30,76 +31,247 @@
     </script>
 
     <style>
-        html, body {
-            height: 100%;
-            width: 100%;
-            overflow-x: hidden;
+        :root {
+            --color-paper: #f2f1e9;
+            --color-surface: #fbfaf5;
+            --color-surface-alt: #e8ece5;
+            --color-ink: #20383b;
+            --color-ink-muted: #5a6c6b;
+            --color-rule: #cbd3ca;
+            --color-accent: #b34a31;
+            --color-accent-ink: #fffaf1;
+            --color-teal: #28727a;
+            --color-amber: #c79335;
+            --color-green: #3e755d;
+            --color-red: #a8473d;
+            --color-focus: #17636a;
+            --font-body: 'Cairo', sans-serif;
+            --font-display: 'Cairo', sans-serif;
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            --radius-panel: 14px;
+            --radius-control: 8px;
+        }
+        html, body { min-height: 100%; width: 100%; margin: 0; overflow-x: clip; }
+        html { background: var(--color-paper); }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            display: grid !important;
+            grid-template-rows: auto minmax(0, 1fr);
+            width: 100% !important;
+            min-height: 100vh;
+            min-height: 100dvh;
             margin: 0;
-            padding: 0;
+            padding: clamp(16px, 2.8vw, 40px) !important;
+            gap: clamp(18px, 2.4vw, 32px) !important;
+            color: var(--color-ink) !important;
+            background: var(--color-paper) !important;
+            font-family: var(--font-body);
             touch-action: manipulation;
         }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #05070a;
-            color: #ffffff;
-            user-select: none;
-            -webkit-user-select: none;
+        body > header, body > main { width: min(100%, 1360px); justify-self: center; }
+        button, select { font: inherit; }
+        button:focus-visible, select:focus-visible, .card-btn:focus-visible {
+            outline: 3px solid var(--color-focus);
+            outline-offset: 3px;
         }
-        .font-gaming { font-family: 'Teko', 'Cairo', sans-serif; letter-spacing: 0.5px; }
-        .bg-grid-pattern {
-            background-image: radial-gradient(rgba(255, 208, 0, 0.08) 1px, transparent 1px);
-            background-size: 24px 24px;
+        [dir="rtl"] { unicode-bidi: isolate; }
+        .font-gaming { font-family: var(--font-display) !important; letter-spacing: 0 !important; }
+        .bg-grid-pattern { background-image: none !important; }
+        [class~="bg-gradient-to-r"], [class~="bg-gradient-to-b"] { background-image: none !important; }
+        [class~="text-transparent"] { color: var(--color-ink) !important; -webkit-text-fill-color: var(--color-ink) !important; }
+        [class~="text-white"] { color: var(--color-ink) !important; }
+        [class~="text-black"] { color: var(--color-accent-ink) !important; }
+        [class~="text-gray-200"], [class~="text-gray-300"], [class~="text-gray-400"], [class~="text-gray-500"] { color: var(--color-ink-muted) !important; }
+        [class~="text-yellow-200"], [class~="text-yellow-300"] { color: var(--color-teal) !important; }
+        [class~="text-red-300"] { color: var(--color-red) !important; }
+        [class~="text-monorail-yellow"] { color: var(--color-teal) !important; }
+        [class~="text-monorail-orange"] { color: var(--color-accent) !important; }
+        [class~="text-monorail-blue"] { color: var(--color-teal) !important; }
+        [class~="bg-monorail-dark"], [class~="bg-monorail-panel"], [class~="bg-monorail-card"] { background-color: var(--color-surface) !important; }
+        [class~="bg-monorail-card/60"], [class~="bg-gray-900"], [class~="bg-gray-800"] { background-color: var(--color-surface-alt) !important; }
+        [class~="bg-monorail-orange"] { background-color: var(--color-accent) !important; }
+        [class~="bg-monorail-yellow"] { background-color: var(--color-amber) !important; }
+        [class~="bg-monorail-blue"] { background-color: var(--color-teal) !important; }
+        [class~="bg-black"], [class~="bg-black/40"], [class~="bg-black/50"], [class~="bg-black/60"], [class~="bg-black/80"] { background-color: var(--color-surface-alt) !important; }
+        [class~="bg-black/85"], [class~="bg-black/90"] { background-color: color-mix(in srgb, var(--color-ink) 82%, transparent) !important; }
+        [class~="bg-yellow-950/60"], [class~="bg-red-950"] { background-color: var(--color-surface-alt) !important; }
+        [class~="border-monorail-border"], [class~="border-gray-700"], [class~="border-gray-800"] { border-color: var(--color-rule) !important; }
+        [class~="shadow-md"], [class~="shadow-lg"], [class~="shadow-xl"], [class~="shadow-2xl"], [class~="shadow-inner"] { box-shadow: none !important; }
+        [class~="backdrop-blur-md"] { backdrop-filter: none !important; }
+        header {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px 24px !important;
+            padding: 0 0 18px !important;
+            color: var(--color-ink) !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-bottom: 1px solid var(--color-rule) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
         }
-        .fn-card { 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            cursor: pointer; 
+        header > div:first-of-type { width: auto !important; flex: 1 1 520px; }
+        header > div:first-of-type > div:first-child { gap: 14px !important; }
+        header > div:first-of-type > div:first-child > div:first-child {
+            padding: 0 !important;
+            color: var(--color-ink) !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            font: 700 1.25rem/1.2 var(--font-display) !important;
         }
-        .fn-card:hover { transform: translateY(-2px); }
-        .fn-card:active { transform: scale(0.95); }
-        
-        .aura-Fe.fn-card-selected { border-color: #ff6b00 !important; box-shadow: 0 0 20px rgba(255, 107, 0, 0.8) !important; }
-        .aura-FeO.fn-card-selected { border-color: #9ca3af !important; box-shadow: 0 0 20px rgba(156, 163, 175, 0.8) !important; }
-        .aura-Fe3O4.fn-card-selected { border-color: #00e5ff !important; box-shadow: 0 0 20px rgba(0, 229, 255, 0.8) !important; }
-        .aura-Fe2O3.fn-card-selected { border-color: #ef4444 !important; box-shadow: 0 0 20px rgba(239, 68, 68, 0.8) !important; }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
+        header > div:first-of-type > div:first-child > div:first-child i { color: var(--color-accent); }
+        header > div:first-of-type > div:first-child > div:nth-child(2) {
+            border: 0 !important;
+            background: transparent !important;
+            padding: 2px 0 !important;
         }
-        .floating-xp {
-            position: absolute;
-            animation: floatUp 0.8s ease-out forwards;
-            pointer-events: none;
-            font-weight: 900;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.5rem;
-            color: #ffd000;
-            text-shadow: 0 0 10px rgba(255, 208, 0, 0.8);
-            z-index: 100;
+        header > div:first-of-type > div:last-child { gap: 8px !important; }
+        header > div:last-child { width: 100%; padding: 10px 0 0 !important; border-top: 1px solid var(--color-rule); }
+        #rankPanel { padding: 0 !important; border: 0 !important; background: transparent !important; }
+        header button, main button {
+            min-height: 42px;
+            border-radius: var(--radius-control) !important;
+            box-shadow: none !important;
+            transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
         }
-
-        @keyframes eqPulse {
-            0%, 100% { height: 4px; }
-            50% { height: 16px; }
+        header button:hover, main button:hover { transform: none !important; filter: brightness(0.96); }
+        header button[aria-pressed="true"] { color: var(--color-accent-ink) !important; background: var(--color-ink) !important; }
+        header button[aria-pressed="false"] { color: var(--color-ink-muted) !important; background: transparent !important; }
+        header [role="group"] { padding: 3px !important; border: 1px solid var(--color-rule) !important; background: transparent !important; }
+        #randomChallengeButton { color: var(--color-accent) !important; background: transparent !important; border: 1px solid var(--color-accent) !important; }
+        #audioEqVisualizer { border: 0 !important; background: transparent !important; }
+        .eq-bar { width: 3px; background: var(--color-teal); animation: none; height: 8px; }
+        main {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
+            grid-template-areas: "prompt progress" "arena picker" "arena meter";
+            align-content: start;
+            align-items: start;
+            gap: 22px 28px !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
         }
-        .eq-bar {
-            width: 3px;
-            background: #00e5ff;
-            border-radius: 2px;
-            animation: eqPulse 0.4s infinite ease-in-out alternate;
+        #stepBanner {
+            grid-area: prompt;
+            align-self: center;
+            padding: 4px 0 4px 16px !important;
+            border: 0 !important;
+            border-left: 3px solid var(--color-accent) !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            color: var(--color-ink) !important;
+            text-align: left !important;
+            font-size: clamp(1.15rem, 2vw, 1.55rem) !important;
+            line-height: 1.45;
+            box-shadow: none !important;
         }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0f141f; }
-        ::-webkit-scrollbar-thumb { background: #26334d; border-radius: 4px; }
+        #progressPanel { grid-area: progress; align-self: center; padding: 0 !important; background: transparent !important; border: 0 !important; }
+        #progressPanel > div:first-child { color: var(--color-ink-muted) !important; }
+        #progressPanel > div:first-child span { color: var(--color-ink-muted) !important; }
+        #progressPanel > div:last-child { height: 8px !important; border: 0 !important; background: var(--color-rule) !important; }
+        #trainProgressBar { border-radius: 99px !important; background: var(--color-accent) !important; }
+        #trainIcon { color: var(--color-ink) !important; }
+        #oxredArena, #reactionsArena { grid-area: arena; min-width: 0; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; }
+        #oxredArena { justify-content: flex-start !important; gap: 0 !important; }
+        #oxredArena > div { align-items: center !important; padding: 18px 0 !important; border: 0 !important; border-bottom: 1px solid var(--color-rule) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+        #oxredArena > div > span:first-child { width: 112px !important; color: var(--color-ink-muted) !important; font-size: 0.9rem !important; }
+        #oxredArena > div > span:first-child i { color: var(--color-teal) !important; }
+        #reactantSlot, #agentZone, #predictionSlot {
+            min-height: 66px !important;
+            height: auto !important;
+            border: 1px solid var(--color-rule) !important;
+            border-radius: 10px !important;
+            background: var(--color-surface) !important;
+            color: var(--color-ink) !important;
+        }
+        #agentZone { padding: 10px !important; }
+        #agentZone button, #predOptions button { border: 1px solid var(--color-rule) !important; }
+        #predOptions button { color: var(--color-ink) !important; background: var(--color-surface-alt) !important; font-size: 0.95rem !important; }
+        #compoundPicker { grid-area: picker; align-self: start; padding: 0 !important; border: 0 !important; }
+        #compoundPicker > span { margin-bottom: 12px !important; color: var(--color-ink-muted) !important; text-align: left !important; text-transform: none !important; letter-spacing: 0 !important; }
+        #compoundCards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px !important; }
+        .card-btn {
+            min-height: 82px;
+            padding: 12px !important;
+            border: 1px solid var(--color-rule) !important;
+            border-radius: 10px !important;
+            background: var(--color-surface) !important;
+            color: var(--color-ink) !important;
+            text-align: left !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        .card-btn:hover { border-color: var(--color-ink-muted) !important; }
+        .card-btn.fn-card-selected { border-color: var(--color-accent) !important; background: var(--color-surface-alt) !important; box-shadow: inset 3px 0 var(--color-accent) !important; }
+        .card-btn span { color: var(--color-ink-muted) !important; }
+        .card-btn span:last-child { color: var(--color-ink) !important; font-size: 1.3rem !important; }
+        .card-btn.fn-card-selected span { color: var(--color-ink) !important; }
+        #oxStateMeter { grid-area: meter; align-self: start; margin: 0 !important; padding: 14px 0 !important; border: 0 !important; border-top: 1px solid var(--color-rule) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+        #oxStateMeter > div { background: var(--color-rule) !important; border: 0 !important; }
+        #oxStateMeterBar { background: var(--color-teal) !important; }
+        #reactionsArena { min-height: 260px; align-items: flex-start !important; justify-content: center !important; text-align: left !important; }
+        #reactionsArena > div { margin-left: 0 !important; border: 0 !important; background: var(--color-surface-alt) !important; box-shadow: none !important; }
+        #reactionsArena h3 { color: var(--color-ink) !important; font-size: 1.35rem !important; }
+        #reactionsArena p { max-width: 38ch !important; color: var(--color-ink-muted) !important; font-size: 1rem !important; }
+        [role="dialog"] { background: color-mix(in srgb, var(--color-ink) 76%, transparent) !important; backdrop-filter: none !important; }
+        [role="dialog"] > div { color: var(--color-ink) !important; background: var(--color-surface) !important; border: 1px solid var(--color-rule) !important; border-radius: var(--radius-panel) !important; box-shadow: 0 24px 80px color-mix(in srgb, var(--color-ink) 20%, transparent) !important; }
+        [role="dialog"] > div { text-align: left !important; }
+        #reactGuessModal > div, #resultModal > div { width: min(600px, 100%) !important; max-width: 600px !important; }
+        [role="dialog"] h2, [role="dialog"] h3, [role="dialog"] .text-monorail-yellow { color: var(--color-ink) !important; }
+        [role="dialog"] p, [role="dialog"] span { color: var(--color-ink-muted); }
+        [role="dialog"] button { min-height: 44px; color: var(--color-ink) !important; background: var(--color-surface-alt) !important; border: 1px solid var(--color-rule) !important; }
+        #reactChoiceModal .grid button { min-height: 96px; justify-content: center; background: var(--color-surface-alt) !important; }
+        #reactChoiceModal .grid button:first-child { color: var(--color-accent) !important; border-color: var(--color-accent) !important; }
+        #reactChoiceModal .grid button:last-child { color: var(--color-teal) !important; border-color: var(--color-teal) !important; }
+        #resBanner { color: var(--color-ink) !important; background: var(--color-surface-alt) !important; border: 0 !important; }
+        #resDesc, #resEquation { color: var(--color-ink) !important; background: var(--color-surface-alt) !important; border: 0 !important; font-family: var(--font-mono); text-align: left; }
+        #memeContainer img { display: block; width: min(100%, 320px); max-height: 220px; object-fit: cover; border: 1px solid var(--color-rule); border-radius: 12px; }
+        #resultActionBtn, #victoryModal button { color: var(--color-accent-ink) !important; background: var(--color-accent) !important; border-color: var(--color-accent) !important; }
+        #hintBtn { color: var(--color-ink) !important; background: var(--color-amber) !important; border-color: var(--color-amber) !important; }
+        [class~="bg-green-950"] { background-color: var(--color-surface-alt) !important; }
+        [class~="text-green-300"] { color: var(--color-green) !important; }
+        [class~="bg-red-500"], [class~="border-red-500\/80"] { background-color: var(--color-accent) !important; border-color: var(--color-accent) !important; }
+        [class~="text-red-400"] { color: var(--color-red) !important; }
+        .floating-xp { color: var(--color-accent) !important; font: 700 1.1rem var(--font-display) !important; text-shadow: none !important; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-paper); }
+        ::-webkit-scrollbar-thumb { background: var(--color-rule); border-radius: 99px; }
+        @media (max-width: 900px) {
+            body { padding: 18px !important; }
+            main { grid-template-columns: minmax(0, 1fr); grid-template-areas: "prompt" "progress" "arena" "meter" "picker"; gap: 18px !important; }
+            #compoundPicker { padding-top: 8px !important; }
+            #compoundCards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            header > div:first-of-type { flex-basis: 100%; }
+        }
+        @media (max-width: 520px) {
+            body { padding: 14px !important; gap: 16px !important; }
+            header > div:first-of-type { align-items: flex-start !important; flex-direction: column !important; }
+            header > div:first-of-type > div:last-child { justify-content: flex-start !important; }
+            #oxredArena > div { align-items: stretch !important; flex-direction: column; gap: 8px; }
+            #oxredArena > div > span:first-child { width: auto !important; }
+            #compoundCards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            #progressPanel > div:first-child { gap: 8px; }
+            #progressText { text-align: center; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
     </style>
 </head>
-<body class="bg-grid-pattern flex flex-col justify-between p-4 gap-3.5 min-h-screen w-screen relative">
+    <body class="min-h-screen relative">
 
     <div id="floatingXpContainer" class="absolute inset-0 pointer-events-none overflow-hidden z-50"></div>
 
     <script>
         const audioFX = {
+            players: Object.create(null),
             triggerEqualizer() {
                 const eq = document.getElementById('audioEqVisualizer');
                 if(eq) {
@@ -107,20 +279,31 @@
                     setTimeout(() => eq.classList.add('hidden'), 1200);
                 }
             },
-            playCustomSound(type) {
+            playSound(url, fallback) {
                 this.triggerEqualizer();
-                let audioUrl = type === 'success' ? 'luxus.mp3' : 'zero.mp3';
-                let audio = new Audio(audioUrl);
-                audio.play().catch(() => {
+                const audio = this.players[url] || (this.players[url] = new Audio(url));
+                audio.preload = 'auto';
+                audio.pause();
+                try { audio.currentTime = 0; } catch (error) { /* The file may not be ready yet. */ }
+                try {
+                    const playback = audio.play();
+                    if (playback && typeof playback.catch === 'function') playback.catch(fallback);
+                } catch (error) {
+                    fallback();
+                }
+            },
+            playCustomSound(type) {
+                const audioUrl = type === 'success' ? 'luxus.mp3' : 'zero.mp3';
+                this.playSound(audioUrl, () => {
                     if(type === 'success') this.playFallbackSuccess();
                     else this.playFallbackError();
                 });
             },
+            playWrongAnswerSound() {
+                this.playSound('zero.mp3', () => this.playFallbackError());
+            },
             playFeCardSound() {
-                this.triggerEqualizer();
-                let audioUrl = 'fe-sound.mp3';
-                let audio = new Audio(audioUrl);
-                audio.play().catch(() => {
+                this.playSound('fe-sound.mp3', () => {
                     try {
                         let ctx = new (window.AudioContext || window.webkitAudioContext)();
                         let now = ctx.currentTime;
@@ -169,6 +352,7 @@
     </script>
 
     <header class="bg-monorail-panel border border-monorail-border rounded-2xl p-3.5 flex flex-col gap-2 shadow-xl backdrop-blur-md relative">
+        <h1 class="sr-only">Monorail Iron Chemistry Challenge</h1>
         <div class="flex items-center justify-between w-full">
             <div class="flex items-center gap-2">
                 <div class="bg-gradient-to-r from-monorail-orange to-monorail-yellow text-black px-3 py-1 rounded-xl font-black font-gaming text-base flex items-center gap-1.5 shadow-lg shadow-orange-500/20">
@@ -176,20 +360,24 @@
                 </div>
                 <div class="flex items-center gap-1.5 text-xs font-bold bg-black/40 px-2.5 py-1 rounded-xl border border-monorail-border/60">
                     <span class="text-gray-400">XP:</span>
-                    <span id="scoreText" class="text-monorail-yellow font-black text-sm font-gaming">0</span>
+                    <span id="scoreText" class="text-monorail-yellow font-black text-sm font-gaming" aria-live="polite" aria-atomic="true">0</span>
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5">
-                <button onclick="startRandomChallenge()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white px-2.5 py-1.5 rounded-xl text-xs font-gaming font-black shadow-md flex items-center gap-1" title="تحدي عشوائي">
-                    <span>🎰 تحدي عشوائي</span>
+                <button id="randomChallengeButton" onclick="startRandomChallenge()" class="px-3 py-2 rounded-xl text-sm font-gaming font-black flex items-center gap-2" title="تحدي عشوائي" aria-label="Start a random reaction challenge">
+                    <i class="fa-solid fa-shuffle" aria-hidden="true"></i><span>Quick challenge · تحدي عشوائي</span>
                 </button>
-                <div class="bg-black/60 border border-monorail-border/80 rounded-xl p-1 flex items-center gap-1">
-                    <button id="modeBtnOxRed" onclick="switchGameMode('oxred')" class="px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all bg-monorail-orange text-black shadow-md">Ox & Red</button>
-                    <button id="modeBtnReactions" onclick="switchGameMode('reactions')" class="px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all text-gray-400 hover:text-white">Reactions</button>
+                <div class="bg-black/60 border border-monorail-border/80 rounded-xl p-1 flex items-center gap-1" role="group" aria-label="Choose game mode">
+                    <button id="modeBtnOxRed" aria-pressed="true" onclick="switchGameMode('oxred')" class="px-2.5 py-1 rounded-lg text-sm font-black font-gaming transition-colors bg-monorail-orange text-black shadow-md">Ox & Red</button>
+                    <button id="modeBtnReactions" aria-pressed="false" onclick="switchGameMode('reactions')" class="px-2.5 py-1 rounded-lg text-sm font-black font-gaming transition-colors text-gray-300 hover:text-white">Reactions</button>
                 </div>
-                <button onclick="resetGameTurn()" class="bg-monorail-card hover:bg-gray-800 text-monorail-yellow border border-monorail-yellow/30 p-2 rounded-xl text-xs transition-all shadow-md">
+                <button onclick="resetGameTurn()" class="bg-monorail-card hover:bg-gray-800 text-monorail-yellow border border-monorail-yellow/30 px-3 py-2 rounded-xl text-sm transition-colors shadow-md" aria-label="Reset current turn" title="Reset current turn">
                     <i class="fa-solid fa-rotate"></i>
+                    <span class="sr-only">Reset turn</span>
+                </button>
+                <button onclick="startNewGame()" class="bg-monorail-card hover:bg-gray-800 text-gray-200 border border-gray-600 px-3 py-2 rounded-xl text-sm transition-colors" aria-label="Start a new game" title="Clear score and progress">
+                    New game
                 </button>
             </div>
         </div>
@@ -202,28 +390,28 @@
             <div class="eq-bar" style="animation-delay: 0.15s;"></div>
         </div>
 
-        <div class="flex justify-between items-center text-[11px] bg-black/50 px-3 py-1 rounded-xl border border-gray-800">
+        <div id="rankPanel" class="flex justify-between items-center text-sm bg-black/50 px-3 py-2 rounded-xl border border-gray-800">
             <span class="text-gray-400 font-bold">الرتبة الحالية:</span>
-            <span id="userRankText" class="text-monorail-yellow font-black font-gaming text-xs">مبتدئ 🐣</span>
+                    <span id="userRankText" dir="auto" class="text-monorail-yellow font-black font-gaming text-sm">مبتدئ</span>
         </div>
     </header>
 
     <main class="flex-1 bg-monorail-panel border border-monorail-border rounded-2xl p-4 flex flex-col justify-between gap-4 shadow-2xl backdrop-blur-md">
         
-        <div class="bg-black/60 border border-monorail-border rounded-xl p-2.5 flex flex-col gap-1.5">
-            <div class="flex justify-between text-[10px] text-gray-400 font-bold font-gaming">
-                <span>Start Station</span>
-                <span id="progressText" class="text-monorail-yellow">Progress: 0 / 5</span>
-                <span>Finish Line 🎯</span>
+        <div id="progressPanel" class="bg-black/60 border border-monorail-border rounded-xl p-2.5 flex flex-col gap-1.5">
+            <div class="flex justify-between text-xs text-gray-300 font-bold font-gaming">
+                <span>Start</span>
+                <span id="progressText" class="text-monorail-yellow" aria-live="polite">Questions cleared: 0 / 5</span>
+                <span>Finish</span>
             </div>
             <div class="w-full bg-gray-900 h-3 rounded-full relative overflow-hidden border border-gray-800">
-                <div id="trainProgressBar" class="bg-gradient-to-r from-monorail-orange to-monorail-yellow h-full w-0 transition-all duration-500 rounded-full"></div>
-                <div id="trainIcon" class="absolute top-0 left-0 text-black text-[10px] transition-all duration-500 transform -translate-y-0.5">🚆</div>
+                <div id="trainProgressBar" role="progressbar" aria-label="Unique questions cleared" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" class="bg-gradient-to-r from-monorail-orange to-monorail-yellow h-full w-0 transition-[width] duration-500 rounded-full"></div>
+                <div id="trainIcon" aria-hidden="true" class="absolute top-0 left-0 text-black text-xs transition-[left] duration-500 transform -translate-y-0.5"><i class="fa-solid fa-train-subway"></i></div>
             </div>
         </div>
 
-        <div id="stepBanner" class="bg-gradient-to-r from-black/80 via-monorail-card to-black/80 border border-monorail-yellow/30 rounded-xl py-2 px-4 text-center text-xs font-bold text-monorail-yellow shadow-inner">
-            <span id="stepText">Step 1: Select an Iron Compound Card below!</span>
+        <div id="stepBanner" class="bg-gradient-to-r from-black/80 via-monorail-card to-black/80 border border-monorail-yellow/30 rounded-xl py-3 px-4 text-center text-sm font-bold text-monorail-yellow shadow-inner" aria-live="polite">
+            <span id="stepText" dir="auto">Choose an iron compound card below — يلا نبدأ!</span>
         </div>
 
         <div id="oxredArena" class="flex-1 flex flex-col gap-3.5 justify-center py-2">
@@ -236,11 +424,11 @@
             </div>
 
             <div class="bg-monorail-card/60 border border-monorail-border rounded-2xl p-3.5 flex items-center justify-between shadow-md">
-                <span class="text-xs text-monorail-orange font-bold w-24 flex items-center gap-2"><i class="fa-solid fa-2 text-monorail-orange"></i> Weapon:</span>
+                <span class="text-xs text-monorail-orange font-bold w-24 flex items-center gap-2"><i class="fa-solid fa-2 text-monorail-orange"></i> Agent:</span>
                 <div id="agentZone" class="flex-1 min-h-[72px] bg-black/50 border border-dashed border-gray-700/80 rounded-xl p-2.5 flex items-center justify-center text-center">
                     <div id="typeBtns" class="grid grid-cols-2 gap-2.5 w-full hidden">
-                        <button onclick="handleChooseType('reducing')" class="bg-monorail-blue hover:brightness-110 text-black font-black text-xs py-2.5 rounded-xl font-gaming shadow-md transition-all">REDUCING ⚡</button>
-                        <button onclick="handleChooseType('oxidizing')" class="bg-monorail-orange hover:brightness-110 text-black font-black text-xs py-2.5 rounded-xl font-gaming shadow-md transition-all">OXIDIZING 🔥</button>
+                        <button onclick="handleChooseType('reducing')" class="bg-monorail-blue hover:brightness-110 text-black font-black text-sm py-2.5 rounded-xl font-gaming shadow-md transition-colors">Reducing</button>
+                        <button onclick="handleChooseType('oxidizing')" class="bg-monorail-orange hover:brightness-110 text-black font-black text-sm py-2.5 rounded-xl font-gaming shadow-md transition-colors">Oxidizing</button>
                     </div>
                     <div id="agentConfig" class="w-full hidden text-center space-y-2"></div>
                 </div>
@@ -251,139 +439,129 @@
                 <div id="predictionSlot" class="flex-1 min-h-[72px] bg-black/50 border border-dashed border-monorail-yellow/30 rounded-xl p-2.5 flex items-center justify-center text-center">
                     <div id="predPlaceholder" class="text-xs text-gray-500 flex items-center gap-2">
                         <i class="fa-solid fa-circle-question text-monorail-yellow/40"></i>
-                        <span>Select weapon first</span>
+                        <span>Select agent first</span>
                     </div>
                     <div id="predOptions" class="grid grid-cols-4 gap-2 w-full hidden">
-                        <button onclick="submitPrediction('Fe')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-all">Fe</button>
-                        <button onclick="submitPrediction('FeO')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-all">FeO</button>
-                        <button onclick="submitPrediction('Fe3O4')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-all">Fe₃O₄</button>
-                        <button onclick="submitPrediction('Fe2O3')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-all">Fe₂O₃</button>
+                        <button onclick="submitPrediction('Fe')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-colors">Fe</button>
+                        <button onclick="submitPrediction('FeO')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-colors">FeO</button>
+                        <button onclick="submitPrediction('Fe3O4')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-colors">Fe₃O₄</button>
+                        <button onclick="submitPrediction('Fe2O3')" class="bg-gray-800 hover:bg-gray-700 text-white font-black py-2.5 rounded-xl text-xs font-gaming border border-gray-700 shadow transition-colors">Fe₂O₃</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="reactionsArena" class="flex-1 my-4 flex flex-col items-center justify-center hidden text-center p-5 bg-monorail-card/30 rounded-2xl border border-dashed border-monorail-border">
-            <div class="w-16 h-16 rounded-2xl bg-monorail-yellow/10 border border-monorail-yellow/30 flex items-center justify-center mb-3 text-monorail-yellow shadow-lg">
-                <i class="fa-solid fa-vial-circle-check text-2xl"></i>
-            </div>
-            <h3 class="text-base font-black text-monorail-yellow font-gaming">🧪 Iron Reactions Mode</h3>
-            <p id="reactModeSubtext" class="text-xs text-gray-400 mt-1 max-w-[240px]">Select a card below to test preparation & chemical properties!</p>
+            <h3 class="text-base font-black text-monorail-yellow font-gaming">Iron reactions</h3>
+            <p id="reactModeSubtext" class="text-xs text-gray-400 mt-1 max-w-[240px]">Choose a compound to explore its preparation and chemical properties.</p>
         </div>
 
-        <div class="bg-black/80 border border-monorail-border rounded-xl p-2.5 flex items-center justify-between shadow-inner">
-            <span class="text-[10px] text-gray-400 font-bold font-gaming flex items-center gap-1">
-                <i class="fa-solid fa-bolt text-monorail-yellow"></i> Oxidation State:
+        <div id="oxStateMeter" class="bg-black/80 border border-monorail-border rounded-xl p-2.5 flex items-center justify-between shadow-inner">
+            <span class="text-xs text-gray-300 font-bold font-gaming flex items-center gap-1">
+                Oxidation state
             </span>
-            <div class="flex-1 mx-3 bg-gray-900 h-2.5 rounded-full overflow-hidden border border-gray-800 relative">
-                <div id="oxStateMeterBar" class="h-full bg-monorail-yellow w-0 transition-all duration-300"></div>
+            <div class="flex-1 mx-3 bg-gray-900 h-2.5 rounded-full overflow-hidden border border-gray-800 relative" role="progressbar" aria-label="Selected compound oxidation state" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0">
+                <div id="oxStateMeterBar" class="h-full bg-monorail-yellow w-0 transition-[width] duration-300"></div>
             </div>
             <span id="oxStateMeterText" class="text-xs font-black text-monorail-yellow font-gaming">0</span>
         </div>
 
-        <div class="pt-2 border-t border-monorail-border/80">
-            <span class="text-[11px] text-gray-400 font-bold block mb-2 uppercase tracking-wider text-center">Select Compound Card</span>
-            <div class="grid grid-cols-4 gap-2.5">
-                <div id="card-Fe" data-symbol="Fe" data-station="1" data-ox="0" data-name="Iron (Fe)" class="card-btn fn-card aura-Fe bg-monorail-card border border-orange-500/40 hover:border-orange-500 rounded-2xl p-3 text-center shadow-md">
-                    <span class="text-[10px] text-orange-400 block font-bold mb-1">St 1</span>
-                    <h4 class="font-black text-lg text-white font-gaming tracking-wider">Fe</h4>
-                </div>
-                <div id="card-FeO" data-symbol="FeO" data-station="2" data-ox="+2" data-name="Iron(II) Oxide" class="card-btn fn-card aura-FeO bg-monorail-card border border-amber-500/40 hover:border-amber-500 rounded-2xl p-3 text-center shadow-md">
-                    <span class="text-[10px] text-amber-400 block font-bold mb-1">St 2</span>
-                    <h4 class="font-black text-lg text-white font-gaming tracking-wider">FeO</h4>
-                </div>
-                <div id="card-Fe3O4" data-symbol="Fe3O4" data-station="3" data-ox="+2.6" data-name="Fe₃O₄ Oxide" class="card-btn fn-card aura-Fe3O4 bg-monorail-card border border-cyan-500/40 hover:border-cyan-500 rounded-2xl p-3 text-center shadow-md">
-                    <span class="text-[10px] text-cyan-400 block font-bold mb-1">St 3</span>
-                    <h4 class="font-black text-lg text-white font-gaming tracking-wider">Fe₃O₄</h4>
-                </div>
-                <div id="card-Fe2O3" data-symbol="Fe2O3" data-station="4" data-ox="+3" data-name="Iron(III) Oxide" class="card-btn fn-card aura-Fe2O3 bg-monorail-card border border-purple-500/40 hover:border-purple-500 rounded-2xl p-3 text-center shadow-md">
-                    <span class="text-[10px] text-purple-400 block font-bold mb-1">St 4</span>
-                    <h4 class="font-black text-lg text-white font-gaming tracking-wider">Fe₂O₃</h4>
-                </div>
+        <div id="compoundPicker" class="pt-2 border-t border-monorail-border/80">
+            <span class="text-sm text-gray-300 font-bold block mb-2 uppercase tracking-wider text-center">Choose a compound card</span>
+            <div id="compoundCards" class="grid grid-cols-4 gap-2.5" role="group" aria-label="Choose a compound card">
+                <button type="button" id="card-Fe" data-symbol="Fe" data-station="1" data-ox="0" data-name="Iron (Fe)" aria-pressed="false" class="card-btn fn-card aura-Fe bg-monorail-card border border-orange-500/40 hover:border-orange-500 rounded-2xl p-3 text-center shadow-md">
+                <span class="text-xs text-orange-300 block font-bold mb-1">Station 1</span>
+                    <span class="block font-black text-lg text-white font-gaming tracking-wider">Fe</span>
+                </button>
+                <button type="button" id="card-FeO" data-symbol="FeO" data-station="2" data-ox="+2" data-name="Iron(II) Oxide" aria-pressed="false" class="card-btn fn-card aura-FeO bg-monorail-card border border-amber-500/40 hover:border-amber-500 rounded-2xl p-3 text-center shadow-md">
+                <span class="text-xs text-amber-300 block font-bold mb-1">Station 2</span>
+                    <span class="block font-black text-lg text-white font-gaming tracking-wider">FeO</span>
+                </button>
+                <button type="button" id="card-Fe3O4" data-symbol="Fe3O4" data-station="3" data-ox="+8/3" data-name="Iron(II,III) oxide" aria-pressed="false" class="card-btn fn-card aura-Fe3O4 bg-monorail-card border border-cyan-500/40 hover:border-cyan-500 rounded-2xl p-3 text-center shadow-md">
+                <span class="text-xs text-cyan-300 block font-bold mb-1">Station 3</span>
+                    <span class="block font-black text-lg text-white font-gaming tracking-wider">Fe₃O₄</span>
+                </button>
+                <button type="button" id="card-Fe2O3" data-symbol="Fe2O3" data-station="4" data-ox="+3" data-name="Iron(III) Oxide" aria-pressed="false" class="card-btn fn-card aura-Fe2O3 bg-monorail-card border border-purple-500/40 hover:border-purple-500 rounded-2xl p-3 text-center shadow-md">
+                <span class="text-xs text-purple-300 block font-bold mb-1">Station 4</span>
+                    <span class="block font-black text-lg text-white font-gaming tracking-wider">Fe₂O₃</span>
+                </button>
             </div>
         </div>
     </main>
 
-    <div id="reactChoiceModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-[#161e2e] to-[#0f141f] border-2 border-monorail-yellow/90 rounded-3xl max-w-sm w-full p-6 text-center shadow-[0_0_30px_rgba(255,208,0,0.25)] relative overflow-hidden">
-            <div class="absolute -top-12 -right-12 w-28 h-28 bg-monorail-yellow/10 rounded-full blur-2xl"></div>
-            
-            <div class="w-12 h-12 bg-monorail-yellow/20 border border-monorail-yellow/40 rounded-2xl flex items-center justify-center mx-auto mb-3 text-monorail-yellow shadow-md">
-                <i class="fa-solid fa-atom text-xl animate-spin" style="animation-duration: 8s;"></i>
-            </div>
-            
-            <h3 id="reactModalTitle" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-monorail-yellow to-monorail-orange font-gaming mb-1 tracking-wide">Select Pathway</h3>
-            <p class="text-[11px] text-gray-400 mb-5 font-bold">حدد المسار اللي هتدخل عليه دلوقتي 🚆🧪</p>
+    <div id="reactChoiceModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="reactModalTitle" tabindex="-1">
+        <div class="bg-monorail-panel border border-monorail-border rounded-2xl max-w-sm w-full p-6">
+            <h3 id="reactModalTitle" class="text-xl font-bold text-monorail-yellow mb-1">Select pathway</h3>
+            <p class="text-sm text-gray-400 mb-5">حدد المسار اللي هتدخل عليه دلوقتي</p>
             
             <div class="grid grid-cols-2 gap-3 mb-4">
-                <button onclick="handleReactCategory('prep')" class="bg-gradient-to-r from-monorail-orange to-amber-500 hover:brightness-110 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg transition-all flex flex-col items-center gap-1 border border-orange-300/40">
+                <button onclick="handleReactCategory('prep')" class="bg-gradient-to-r from-monorail-orange to-amber-500 hover:brightness-110 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg transition-colors flex flex-col items-center gap-1 border border-orange-300/40">
                     <i class="fa-solid fa-industry text-lg"></i>
-                    <span>Preparation 🛠️</span>
+                    <span>Preparation</span>
                 </button>
-                <button onclick="handleReactCategory('uses')" class="bg-gradient-to-r from-monorail-blue to-cyan-500 hover:brightness-110 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg transition-all flex flex-col items-center gap-1 border border-blue-300/40">
+                <button onclick="handleReactCategory('uses')" class="bg-gradient-to-r from-monorail-blue to-cyan-500 hover:brightness-110 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg transition-colors flex flex-col items-center gap-1 border border-blue-300/40">
                     <i class="fa-solid fa-flask text-lg"></i>
-                    <span>Chemical Prop. 🧪</span>
+                    <span>Chemical properties</span>
                 </button>
             </div>
-            <button onclick="closeReactModal()" class="w-full bg-black/60 hover:bg-gray-800 text-gray-400 hover:text-white font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">إلغاء ❌</button>
+            <button onclick="closeReactModal()" class="w-full bg-black/60 hover:bg-gray-800 text-gray-400 hover:text-white font-bold py-2.5 rounded-xl text-sm transition-colors border border-monorail-border">إلغاء</button>
         </div>
     </div>
 
-    <div id="reactSubOptionModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="reactSubOptionModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="subOptionTitle" tabindex="-1">
         <div class="bg-monorail-panel border border-monorail-blue/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <h3 id="subOptionTitle" class="text-sm font-black text-monorail-blue font-gaming mb-4">Select Reaction</h3>
             <div id="subOptionList" class="flex flex-col gap-2.5 mb-4 max-h-[60vh] overflow-y-auto pr-1"></div>
-            <button onclick="closeSubOptionModal()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">Back</button>
+            <button onclick="closeSubOptionModal()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs transition-colors border border-monorail-border">Back</button>
         </div>
     </div>
 
-    <div id="reactGuessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="reactGuessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="guessQuestionTitle" tabindex="-1">
         <div class="bg-monorail-panel border border-monorail-yellow/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <div class="flex justify-between items-center mb-2">
-                <span class="text-xs text-monorail-yellow font-bold">Guess the Product! 🧠</span>
-                <button id="hintBtn" onclick="useZizoHint()" class="hidden bg-monorail-yellow text-black font-black text-[10px] px-2.5 py-1 rounded-lg font-gaming shadow">
-                    💡 تلميح
+                <span class="text-sm text-monorail-yellow font-bold">Guess the product</span>
+                <button id="hintBtn" type="button" onclick="useZizoHint()" class="hidden bg-monorail-yellow text-black font-black text-sm px-3 py-2 rounded-lg font-gaming shadow" aria-controls="hintBoxText">
+                    تلميح
                 </button>
             </div>
             <h3 id="guessQuestionTitle" class="text-xs font-bold text-gray-200 mb-2 bg-black/60 p-3.5 rounded-xl border border-monorail-border/60 font-mono"></h3>
-            <div id="hintBoxText" class="hidden text-[11px] bg-yellow-950/60 border border-yellow-500/40 text-yellow-300 p-2 rounded-xl mb-3"></div>
+            <div id="hintBoxText" dir="auto" aria-live="polite" class="hidden text-sm bg-yellow-950/60 border border-yellow-500/40 text-yellow-200 p-3 rounded-xl mb-3"></div>
             <div id="guessOptionsGrid" class="grid grid-cols-2 gap-3 mb-4"></div>
-            <button onclick="closeGuessModal()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">Cancel</button>
+            <button onclick="closeGuessModal()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs transition-colors border border-monorail-border">Cancel</button>
         </div>
     </div>
 
-    <div id="notAvailableModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="notAvailableModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="notAvailableTitle" tabindex="-1">
         <div class="bg-monorail-panel border border-red-500/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
-            <img src="zizo-fail.jpg" alt="Locked meme" class="w-24 h-24 object-cover rounded-xl mx-auto mb-3 border border-red-500/40 shadow">
-            <h3 class="text-base font-black text-red-400 font-gaming mb-1">Not Available Yet! 🙈</h3>
-            <p class="text-xs text-gray-300 bg-black/60 p-3.5 rounded-xl mb-4 border border-red-500/20">غير متوفر حالياً لحد ما أذاكر البارت الأخير! 📚🏃‍♂️</p>
-            <button onclick="closeNotAvailableModal()" class="w-full bg-red-500 hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-all">روح ذاكر الأول! 👍</button>
+            <h3 id="notAvailableTitle" class="text-base font-black text-red-400 font-gaming mb-1">Not available yet</h3>
+            <p class="text-sm text-gray-300 bg-black/60 p-3.5 rounded-xl mb-4 border border-red-500/20">غير متوفر حالياً لحد ما أذاكر البارت الأخير!</p>
+            <button onclick="closeNotAvailableModal()" class="w-full bg-red-500 hover:brightness-110 text-black font-black py-3 rounded-xl text-sm font-gaming shadow-lg transition-colors">روح ذاكر الأول</button>
         </div>
     </div>
 
-    <div id="resultModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="resultModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="resBanner" aria-describedby="resDesc" tabindex="-1">
         <div id="resultBox" class="bg-monorail-panel border border-monorail-orange/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <div id="memeContainer" class="mb-3 flex justify-center"></div>
-            <div id="resBanner" class="text-base font-black mb-3 font-gaming py-2.5 rounded-xl shadow-md"></div>
-            <div id="resDesc" class="text-xs text-gray-200 bg-black/60 p-3.5 rounded-xl my-2 border border-monorail-border/60"></div>
+            <div id="resBanner" dir="auto" class="text-base font-black mb-3 font-gaming py-2.5 rounded-xl shadow-md"></div>
+            <div id="resDesc" dir="auto" class="text-sm text-gray-200 bg-black/60 p-3.5 rounded-xl my-2 border border-monorail-border/60" aria-live="polite"></div>
             <div id="resEquation" class="bg-gray-900 text-monorail-yellow font-mono text-xs p-3.5 rounded-xl mb-4 border border-yellow-500/20 shadow-inner"></div>
-            <button onclick="closeResultModal()" class="w-full bg-monorail-orange hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-all">Next 🚀</button>
+            <button id="resultActionBtn" onclick="closeResultModal()" class="w-full bg-monorail-orange hover:brightness-110 text-black font-black py-3 rounded-xl text-sm font-gaming shadow-lg transition-colors">Next</button>
         </div>
     </div>
 
-    <div id="victoryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-[#1a1c2e] via-[#0f141f] to-[#05070a] border-2 border-monorail-yellow rounded-3xl max-w-sm w-full p-6 text-center shadow-[0_0_40px_rgba(255,208,0,0.4)] relative">
-            <div class="w-16 h-16 bg-monorail-yellow/20 border border-monorail-yellow rounded-full flex items-center justify-center mx-auto mb-3 text-monorail-yellow shadow-lg text-3xl">
-                👑
+    <div id="victoryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="victoryTitle" tabindex="-1">
+        <div class="bg-monorail-panel border border-monorail-border rounded-2xl max-w-sm w-full p-6">
+            <div class="w-12 h-12 bg-monorail-yellow/20 border border-monorail-yellow rounded-xl flex items-center justify-center mb-3 text-monorail-yellow text-xl">
+                <i class="fa-solid fa-trophy" aria-hidden="true"></i>
             </div>
-            <h2 class="text-2xl font-black text-monorail-yellow font-gaming">CERTIFICATE OF VICTORY</h2>
+            <h2 id="victoryTitle" class="text-2xl font-black text-monorail-yellow font-gaming">CERTIFICATE OF VICTORY</h2>
             <p class="text-xs text-gray-300 font-bold mt-1">توج البطل والأسطورة:</p>
-            <h3 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-monorail-orange via-monorail-yellow to-monorail-blue font-gaming my-2"> (لوكسسسس)</h3>
+            <h3 class="text-2xl font-bold font-gaming my-2"> (لوكسسسس)</h3>
             <p class="text-[11px] text-gray-400 bg-black/50 p-3 rounded-xl border border-gray-800 my-3">
-                أنهى محطات قطار مونوريل كيمياء الحديد بنجاح ساحق وقفل جميع التفاعلات والمعادلات! 🚆🔥
+                أنهى محطات قطار مونوريل كيمياء الحديد بنجاح ساحق وقفل جميع التفاعلات والمعادلات!
             </p>
-            <button onclick="closeVictoryModal()" class="w-full bg-monorail-yellow hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-all">
-                خد سكرين شوت وروري أصحابك! 📸
+            <button onclick="closeVictoryModal()" class="w-full bg-monorail-yellow hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-colors">
+                شارك النتيجة مع أصحابك
             </button>
         </div>
     </div>
@@ -399,8 +577,85 @@
             activeCompoundForReact: null, 
             activeCategory: null, 
             activeQuestionObj: null, 
-            progressCount: 0
+            activeQuestionKey: null,
+            hintUsed: false,
+            progressCount: 0,
+            completedChallenges: new Set(),
+            victoryShown: false,
+            victoryPending: false,
+            retryAvailable: false
         };
+
+        const gameStorageKey = 'monorail-iron-chemistry-v1';
+        let lastDialogTrigger = null;
+
+        function openDialog(id) {
+            const dialog = document.getElementById(id);
+            lastDialogTrigger = document.activeElement;
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+            requestAnimationFrame(() => {
+                const firstControl = dialog.querySelector('button:not([disabled]), select, [href], [tabindex="0"]');
+                (firstControl || dialog).focus();
+            });
+        }
+
+        function closeDialog(id) {
+            const dialog = document.getElementById(id);
+            dialog.classList.add('hidden');
+            dialog.classList.remove('flex');
+            const visibleDialog = [...document.querySelectorAll('[role="dialog"]')].find(item => !item.classList.contains('hidden'));
+            if (visibleDialog) {
+                const control = visibleDialog.querySelector('button:not([disabled]), select, [href], [tabindex="0"]');
+                (control || visibleDialog).focus();
+            } else if (lastDialogTrigger && document.contains(lastDialogTrigger)) {
+                lastDialogTrigger.focus();
+            }
+        }
+
+        function saveGameState() {
+            try {
+                localStorage.setItem(gameStorageKey, JSON.stringify({
+                    score: gameState.score,
+                    completedChallenges: [...gameState.completedChallenges]
+                }));
+            } catch (error) {
+                // Keep the current round playable when storage is unavailable.
+            }
+        }
+
+        document.addEventListener('keydown', event => {
+            const dialog = [...document.querySelectorAll('[role="dialog"]')].find(item => !item.classList.contains('hidden'));
+            if (!dialog) return;
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                if (dialog.id === 'resultModal') gameState.retryAvailable = false;
+                const closeActions = {
+                    reactChoiceModal: closeReactModal,
+                    reactSubOptionModal: closeSubOptionModal,
+                    reactGuessModal: closeGuessModal,
+                    notAvailableModal: closeNotAvailableModal,
+                    resultModal: closeResultModal,
+                    victoryModal: closeVictoryModal
+                };
+                closeActions[dialog.id]?.();
+            } else if (event.key === 'Tab') {
+                const controls = [...dialog.querySelectorAll('button:not([disabled]), select, [href], [tabindex="0"]')];
+                if (!controls.length) {
+                    event.preventDefault();
+                    dialog.focus();
+                } else if (event.shiftKey && document.activeElement === controls[0]) {
+                    event.preventDefault();
+                    controls.at(-1).focus();
+                } else if (!event.shiftKey && document.activeElement === controls.at(-1)) {
+                    event.preventDefault();
+                    controls[0].focus();
+                } else if (!dialog.contains(document.activeElement)) {
+                    event.preventDefault();
+                    (event.shiftKey ? controls.at(-1) : controls[0]).focus();
+                }
+            }
+        });
 
         const interactiveReactionsData = {
             'Fe': {
@@ -439,6 +694,18 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const saved = JSON.parse(localStorage.getItem(gameStorageKey) || 'null');
+                if (saved && Array.isArray(saved.completedChallenges)) {
+                    gameState.completedChallenges = new Set(saved.completedChallenges);
+                    gameState.score = Math.max(0, Number(saved.score) || 0);
+                    gameState.progressCount = Math.min(gameState.completedChallenges.size, 5);
+                    document.getElementById('scoreText').innerText = gameState.score;
+                    updateRankDisplay();
+                    renderProgress();
+                    gameState.victoryShown = gameState.progressCount >= 5;
+                }
+            } catch (error) { /* Storage may be disabled by the browser. */ }
             document.querySelectorAll('.card-btn').forEach(card => {
                 card.addEventListener('click', function() {
                     const symbol = this.getAttribute('data-symbol');
@@ -448,11 +715,17 @@
                     
                     updateOxMeter(symbol, oxVal);
 
-                    if(symbol === 'Fe') { audioFX.playFeCardSound(); }
+                    audioFX.playFeCardSound();
 
                     if(gameState.mode === 'oxred') {
                         selectCard(symbol, station, name);
                     } else {
+                        document.querySelectorAll('.card-btn').forEach(item => {
+                            item.classList.remove('fn-card-selected');
+                            item.setAttribute('aria-pressed', 'false');
+                        });
+                        this.classList.add('fn-card-selected');
+                        this.setAttribute('aria-pressed', 'true');
                         handleReactionCardClick(symbol, name);
                     }
                 });
@@ -461,13 +734,16 @@
 
         function updateOxMeter(symbol, oxVal) {
             const meter = document.getElementById('oxStateMeterBar');
+            const track = meter.parentElement;
             const txt = document.getElementById('oxStateMeterText');
             txt.innerText = oxVal;
+            const oxidationState = symbol === 'Fe3O4' ? 8 / 3 : Number(String(oxVal).replace('+', ''));
+            track.setAttribute('aria-valuenow', oxidationState);
 
-            if(symbol === 'Fe') { meter.style.width = '5%'; meter.className = 'h-full bg-orange-500 transition-all duration-300'; }
-            else if(symbol === 'FeO') { meter.style.width = '40%'; meter.className = 'h-full bg-amber-400 transition-all duration-300'; }
-            else if(symbol === 'Fe3O4') { meter.style.width = '70%'; meter.className = 'h-full bg-cyan-400 transition-all duration-300'; }
-            else { meter.style.width = '100%'; meter.className = 'h-full bg-purple-500 transition-all duration-300'; }
+            if(symbol === 'Fe') { meter.style.width = '0%'; meter.className = 'h-full bg-orange-500 transition-[width] duration-300'; }
+            else if(symbol === 'FeO') { meter.style.width = `${(oxidationState / 3) * 100}%`; meter.className = 'h-full bg-amber-400 transition-[width] duration-300'; }
+            else if(symbol === 'Fe3O4') { meter.style.width = `${(oxidationState / 3) * 100}%`; meter.className = 'h-full bg-cyan-400 transition-[width] duration-300'; }
+            else { meter.style.width = '100%'; meter.className = 'h-full bg-purple-500 transition-[width] duration-300'; }
         }
 
         function switchGameMode(newMode) {
@@ -475,33 +751,33 @@
             document.getElementById('oxredArena').classList.toggle('hidden', newMode !== 'oxred');
             document.getElementById('reactionsArena').classList.toggle('hidden', newMode !== 'reactions');
             
-            document.getElementById('modeBtnOxRed').className = newMode === 'oxred' ? 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all bg-monorail-orange text-black shadow-md' : 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all text-gray-400 hover:text-white';
-            document.getElementById('modeBtnReactions').className = newMode === 'reactions' ? 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all bg-monorail-orange text-black shadow-md' : 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all text-gray-400 hover:text-white';
+            document.getElementById('modeBtnOxRed').className = newMode === 'oxred' ? 'px-2.5 py-1 rounded-lg text-sm font-black font-gaming transition-colors bg-monorail-orange text-black shadow-md' : 'px-2.5 py-1 rounded-lg text-sm font-black font-gaming transition-colors text-gray-300 hover:text-white';
+            document.getElementById('modeBtnReactions').className = newMode === 'reactions' ? 'px-2.5 py-1 rounded-lg text-sm font-black font-gaming transition-colors bg-monorail-orange text-black shadow-md' : 'px-2.5 py-1 rounded-lg text-sm font-black font-gaming transition-colors text-gray-300 hover:text-white';
+            document.getElementById('modeBtnOxRed').setAttribute('aria-pressed', String(newMode === 'oxred'));
+            document.getElementById('modeBtnReactions').setAttribute('aria-pressed', String(newMode === 'reactions'));
+            document.getElementById('stepText').innerText = 'Choose an iron compound card below — يلا نبدأ!';
 
             resetGameTurn();
         }
 
         function handleReactionCardClick(symbol, name) {
             if(symbol === 'Fe3O4' || symbol === 'Fe2O3') {
-                document.getElementById('notAvailableModal').classList.remove('hidden');
-                document.getElementById('notAvailableModal').classList.add('flex');
+                openDialog('notAvailableModal');
                 return;
             }
 
             gameState.activeCompoundForReact = symbol;
+            document.getElementById('stepText').innerText = 'Pick a pathway: preparation or properties. اختار المسار!';
             document.getElementById('reactModalTitle').innerText = name;
-            document.getElementById('reactChoiceModal').classList.remove('hidden');
-            document.getElementById('reactChoiceModal').classList.add('flex');
+            openDialog('reactChoiceModal');
         }
 
         function closeNotAvailableModal() {
-            document.getElementById('notAvailableModal').classList.add('hidden');
-            document.getElementById('notAvailableModal').classList.remove('flex');
+            closeDialog('notAvailableModal');
         }
 
         function closeReactModal() {
-            document.getElementById('reactChoiceModal').classList.add('hidden');
-            document.getElementById('reactChoiceModal').classList.remove('flex');
+            closeDialog('reactChoiceModal');
         }
 
         function handleReactCategory(category) {
@@ -510,23 +786,21 @@
             const compoundData = interactiveReactionsData[gameState.activeCompoundForReact];
             const list = category === 'prep' ? compoundData.prepOptions : compoundData.usesOptions;
 
-            document.getElementById('subOptionTitle').innerText = (category === 'prep' ? 'Preparation of ' : 'Chemical Prop. of ') + compoundData.name;
+            document.getElementById('subOptionTitle').innerText = (category === 'prep' ? 'Preparation of ' : 'Chemical properties of ') + compoundData.name;
             
             const container = document.getElementById('subOptionList');
             container.innerHTML = list.map((item, index) => `
-                <button onclick="selectReactionQuestion(${index})" class="w-full bg-monorail-card border border-monorail-border hover:border-monorail-yellow text-white font-bold p-3.5 rounded-xl text-xs text-left flex items-center justify-between transition-all shadow">
-                    <span>${item.label}</span>
+                <button onclick="selectReactionQuestion(${index})" class="w-full bg-monorail-card border border-monorail-border hover:border-monorail-yellow text-white font-bold p-3.5 rounded-xl text-xs text-left flex items-center justify-between transition-colors shadow">
+                    <span dir="auto">${item.label}</span>
                     <i class="fa-solid fa-chevron-right text-monorail-yellow"></i>
                 </button>
             `).join('');
 
-            document.getElementById('reactSubOptionModal').classList.remove('hidden');
-            document.getElementById('reactSubOptionModal').classList.add('flex');
+            openDialog('reactSubOptionModal');
         }
 
         function closeSubOptionModal() {
-            document.getElementById('reactSubOptionModal').classList.add('hidden');
-            document.getElementById('reactSubOptionModal').classList.remove('flex');
+            closeDialog('reactSubOptionModal');
         }
 
         function selectReactionQuestion(index) {
@@ -535,28 +809,33 @@
             const list = gameState.activeCategory === 'prep' ? compoundData.prepOptions : compoundData.usesOptions;
             const qObj = list[index];
             gameState.activeQuestionObj = qObj;
+            gameState.activeQuestionKey = `reaction:${gameState.activeCompoundForReact}:${gameState.activeCategory}:${index}`;
+            gameState.hintUsed = false;
 
             document.getElementById('guessQuestionTitle').innerText = qObj.question;
             document.getElementById('hintBoxText').classList.add('hidden');
+            document.getElementById('hintBtn').classList.remove('hidden');
+            document.getElementById('hintBtn').disabled = false;
 
             const grid = document.getElementById('guessOptionsGrid');
             grid.innerHTML = qObj.options.map(opt => `
-                <button onclick="submitReactionGuess('${opt}')" class="bg-monorail-card border border-gray-700 hover:border-monorail-yellow text-white font-black py-3.5 rounded-xl text-xs font-gaming shadow transition-all">${opt}</button>
+                <button onclick="submitReactionGuess('${opt}')" class="bg-monorail-card border border-gray-700 hover:border-monorail-yellow text-white font-black py-3.5 rounded-xl text-xs font-gaming shadow transition-colors">${opt}</button>
             `).join('');
 
-            document.getElementById('reactGuessModal').classList.remove('hidden');
-            document.getElementById('reactGuessModal').classList.add('flex');
+            openDialog('reactGuessModal');
         }
 
         function useZizoHint() {
+            if (!gameState.activeQuestionObj || gameState.hintUsed) return;
             const hBox = document.getElementById('hintBoxText');
-            hBox.innerText = `💡 تلميح: ${gameState.activeQuestionObj.exp}`;
+            hBox.innerText = 'Hint: ركّز على ظروف التفاعل وحالة تأكسد الحديد — من غير ما نحرق الإجابة.';
             hBox.classList.remove('hidden');
+            gameState.hintUsed = true;
+            document.getElementById('hintBtn').disabled = true;
         }
 
         function closeGuessModal() {
-            document.getElementById('reactGuessModal').classList.add('hidden');
-            document.getElementById('reactGuessModal').classList.remove('flex');
+            closeDialog('reactGuessModal');
         }
 
         function startRandomChallenge() {
@@ -569,22 +848,29 @@
             const qObj = list[Math.floor(Math.random() * list.length)];
 
             gameState.activeQuestionObj = qObj;
-            document.getElementById('guessQuestionTitle').innerText = `⚡ تحدي سريع: ${qObj.question}`;
+            gameState.activeQuestionKey = `reaction:${comp}:${cat}:${list.indexOf(qObj)}`;
+            gameState.hintUsed = false;
+            document.getElementById('guessQuestionTitle').innerText = `تحدي سريع: ${qObj.question}`;
             document.getElementById('hintBoxText').classList.add('hidden');
+            document.getElementById('hintBtn').classList.remove('hidden');
+            document.getElementById('hintBtn').disabled = false;
             
             const grid = document.getElementById('guessOptionsGrid');
             grid.innerHTML = qObj.options.map(opt => `
-                <button onclick="submitReactionGuess('${opt}')" class="bg-monorail-card border border-purple-500/80 hover:border-monorail-yellow text-white font-black py-3.5 rounded-xl text-xs font-gaming shadow transition-all">${opt}</button>
+                <button onclick="submitReactionGuess('${opt}')" class="bg-monorail-card border border-purple-500/80 hover:border-monorail-yellow text-white font-black py-3.5 rounded-xl text-xs font-gaming shadow transition-colors">${opt}</button>
             `).join('');
 
-            document.getElementById('reactGuessModal').classList.remove('hidden');
-            document.getElementById('reactGuessModal').classList.add('flex');
+            openDialog('reactGuessModal');
         }
 
         function submitReactionGuess(userChoice) {
             closeGuessModal();
             const qObj = gameState.activeQuestionObj;
             if(userChoice === qObj.correct) {
+                if (!completeChallenge(gameState.activeQuestionKey)) {
+                    showModal(true, 'Already cleared', 'You already earned XP for this question. Pick a different challenge to keep progressing.', qObj.eq);
+                    return;
+                }
                 audioFX.playCustomSound('success');
                 
                 gameState.score += 25;
@@ -594,29 +880,39 @@
                 triggerFloatingXP(25);
                 updateTrainProgress();
 
-                showModal(true, "عالميييييييي يا لوكسسسسس! 🔥", qObj.exp, qObj.eq);
+                showModal(true, "عالميييييييي يا لوكسسسسس!", qObj.exp, qObj.eq);
             } else {
-                audioFX.playCustomSound('error');
-                showModal(false, "هديك بالزوزوووو خد صفر! ❌", `Correct: ${qObj.correct}\n${qObj.exp}`, qObj.eq);
+                audioFX.playWrongAnswerSound();
+                showModal(false, "هديك بالزوزوووو خد صفر!", `Correct: ${qObj.correct}\n${qObj.exp}`, qObj.eq);
             }
         }
 
         function updateRankDisplay() {
-            let rank = "مبتدئ 🐣";
-            if(gameState.score >= 100 && gameState.score < 300) rank = "سائق مونوريل مجتهد 🚆";
-            else if(gameState.score >= 300) rank = "لوكسسس الكيمياء المعتمد 👑🔥";
+            let rank = "مبتدئ";
+            if(gameState.score >= 100 && gameState.score < 300) rank = "سائق مونوريل مجتهد";
+            else if(gameState.score >= 300) rank = "لوكسسس الكيمياء المعتمد";
             document.getElementById('userRankText').innerText = rank;
         }
 
         function selectCard(symbol, stationNum, desc) {
             gameState.selectedReactant = symbol;
-            document.querySelectorAll('.card-btn').forEach(c => c.classList.remove('fn-card-selected'));
+            gameState.agentType = null;
+            gameState.reagent = null;
+            gameState.tempRange = null;
+            document.querySelectorAll('.card-btn').forEach(c => {
+                c.classList.remove('fn-card-selected');
+                c.setAttribute('aria-pressed', 'false');
+            });
             document.getElementById(`card-${symbol}`).classList.add('fn-card-selected');
+            document.getElementById(`card-${symbol}`).setAttribute('aria-pressed', 'true');
             
             const slot = document.getElementById('reactantSlot');
-            slot.innerHTML = `<span class="text-xs bg-monorail-orange text-black font-black px-2.5 py-1 rounded-lg font-gaming shadow">St ${stationNum}</span><span class="text-xl font-black text-white font-gaming">${symbol}</span>`;
+            slot.innerHTML = `<span class="text-xs bg-monorail-orange text-black font-black px-2.5 py-1 rounded-lg font-gaming shadow">Station ${stationNum}</span><span class="text-xl font-black text-white font-gaming">${symbol}</span>`;
+            document.getElementById('agentConfig').classList.add('hidden');
             document.getElementById('typeBtns').classList.remove('hidden');
+            document.getElementById('stepText').innerText = 'Choose the reaction type. اختار العامل!';
             document.getElementById('predPlaceholder').classList.remove('hidden');
+            document.getElementById('predPlaceholder').innerHTML = '<i class="fa-solid fa-circle-question text-monorail-yellow/60"></i><span>Select an agent first</span>';
             document.getElementById('predOptions').classList.add('hidden');
         }
 
@@ -626,10 +922,12 @@
             const container = document.getElementById('agentConfig');
             container.classList.remove('hidden');
             if(type === 'reducing') {
-                container.innerHTML = `<div class="flex gap-2.5"><select id="reagentSel" class="flex-1 bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="CO">CO</option><option value="H2">H₂</option></select><select id="tempSel" class="flex-1 bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="230-300">230-300°C</option><option value="400-700">400-700°C</option><option value=">700">&gt;700°C</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-blue hover:brightness-110 text-black font-black text-xs py-2.5 rounded-xl font-gaming shadow transition-all">Confirm Weapon</button>`;
+                container.innerHTML = `<div class="flex gap-2.5"><label class="sr-only" for="reagentSel">Choose reducing agent</label><select id="reagentSel" aria-label="Choose reducing agent" class="min-w-0 flex-1 bg-monorail-card border border-monorail-border text-white text-sm rounded-xl p-2.5"><option value="CO">CO</option><option value="H2">H₂</option></select><label class="sr-only" for="tempSel">Choose reaction temperature</label><select id="tempSel" aria-label="Choose reaction temperature" class="min-w-0 flex-1 bg-monorail-card border border-monorail-border text-white text-sm rounded-xl p-2.5"><option value="230-300">230–300°C</option><option value="400-700">400–700°C</option><option value=">700">&gt;700°C</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-blue hover:brightness-110 text-black font-black text-sm py-2.5 rounded-xl font-gaming shadow transition-colors">Confirm agent</button>`;
             } else {
-                container.innerHTML = `<div class="flex gap-2.5"><select id="reagentSel" class="w-full bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="O2">O₂</option><option value="steam">Steam (500°C)</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-orange hover:brightness-110 text-black font-black text-xs py-2.5 rounded-xl font-gaming shadow transition-all">Confirm Weapon</button>`;
+                const oxidizers = gameState.selectedReactant === 'FeO' ? '<option value="O2">O₂</option>' : '<option value="O2">O₂</option><option value="steam">Steam (500°C)</option>';
+                container.innerHTML = `<div class="flex gap-2.5"><label class="sr-only" for="reagentSel">Choose oxidizing condition</label><select id="reagentSel" aria-label="Choose oxidizing condition" class="w-full bg-monorail-card border border-monorail-border text-white text-sm rounded-xl p-2.5">${oxidizers}</select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-orange hover:brightness-110 text-black font-black text-sm py-2.5 rounded-xl font-gaming shadow transition-colors">Confirm agent</button>`;
             }
+            document.getElementById('stepText').innerText = 'Set the conditions, then confirm your agent.';
         }
 
         function confirmAgentConfig() {
@@ -637,11 +935,17 @@
             gameState.tempRange = document.getElementById('tempSel') ? document.getElementById('tempSel').value : null;
             document.getElementById('predPlaceholder').classList.add('hidden');
             document.getElementById('predOptions').classList.remove('hidden');
+            document.getElementById('stepText').innerText = 'Predict the product — إيه الناتج؟';
         }
 
         function submitPrediction(studentChoice) {
             const actual = computeChemicalOutcome(gameState.selectedReactant, gameState.agentType, gameState.reagent, gameState.tempRange);
             if(studentChoice === actual.product) {
+                const challengeKey = `oxred:${gameState.selectedReactant}:${gameState.agentType}:${gameState.reagent}:${gameState.tempRange || ''}`;
+                if (!completeChallenge(challengeKey)) {
+                    showModal(true, 'Already cleared', 'You already earned XP for this setup. Change the compound or reaction conditions to keep progressing.', actual.equation);
+                    return;
+                }
                 audioFX.playCustomSound('success');
                 
                 gameState.score += 25;
@@ -651,32 +955,45 @@
                 triggerFloatingXP(25);
                 updateTrainProgress();
 
-                showModal(true, "عالميييييي وده عكنا! 🔥", actual.explanation, actual.equation);
+                showModal(true, "عالميييييي وده عكنا!", actual.explanation, actual.equation);
             } else {
-                audioFX.playCustomSound('error');
-                showModal(false, "هديك بالزوزوووو خد صفر! ❌", `Correct: ${actual.product}\n${actual.explanation}`, actual.equation);
+                audioFX.playWrongAnswerSound();
+                showModal(false, "هديك بالزوزوووو خد صفر!", `Correct: ${actual.product}\n${actual.explanation}`, actual.equation);
             }
         }
 
         function computeChemicalOutcome(reactant, agentType, reagent, temp) {
             if(agentType === 'reducing') {
                 if(reactant === 'Fe2O3') {
-                    if(temp === '230-300') return { product: 'Fe3O4', explanation: 'At 230-300°C yields Fe₃O₄.', equation: '3Fe₂O₃ + CO --(230-300°C)--> 2Fe₃O₄ + CO₂' };
-                    if(temp === '400-700') return { product: 'FeO', explanation: 'At 400-700°C yields FeO.', equation: 'Fe₂O₃ + CO --(400-700°C)--> 2FeO + CO₂' };
-                    return { product: 'Fe', explanation: 'Above 700°C yields Fe.', equation: 'Fe₂O₃ + 3CO --(>700°C)--> 2Fe + 3CO₂' };
+                    if(temp === '230-300') return reagent === 'H2'
+                        ? { product: 'Fe3O4', explanation: 'At 230–300°C, hydrogen partially reduces iron(III) oxide to magnetite.', equation: '3Fe₂O₃ + H₂ → 2Fe₃O₄ + H₂O' }
+                        : { product: 'Fe3O4', explanation: 'At 230–300°C, carbon monoxide partially reduces iron(III) oxide to magnetite.', equation: '3Fe₂O₃ + CO → 2Fe₃O₄ + CO₂' };
+                    if(temp === '400-700') return reagent === 'H2'
+                        ? { product: 'FeO', explanation: 'At 400–700°C, hydrogen reduces iron(III) oxide to iron(II) oxide.', equation: 'Fe₂O₃ + H₂ → 2FeO + H₂O' }
+                        : { product: 'FeO', explanation: 'At 400–700°C, carbon monoxide reduces iron(III) oxide to iron(II) oxide.', equation: 'Fe₂O₃ + CO → 2FeO + CO₂' };
+                    return reagent === 'H2'
+                        ? { product: 'Fe', explanation: 'Above 700°C, hydrogen can reduce iron(III) oxide to iron.', equation: 'Fe₂O₃ + 3H₂ → 2Fe + 3H₂O' }
+                        : { product: 'Fe', explanation: 'Above 700°C, carbon monoxide can reduce iron(III) oxide to iron.', equation: 'Fe₂O₃ + 3CO → 2Fe + 3CO₂' };
                 }
                 if(reactant === 'Fe3O4') {
-                    if(temp === '400-700') return { product: 'FeO', explanation: 'At 400-700°C yields FeO.', equation: 'Fe₃O₄ + CO --(400-700°C)--> 3FeO + CO₂' };
-                    if(temp === '>700') return { product: 'Fe', explanation: 'Above 700°C yields Fe.', equation: 'Fe₃O₄ + 4CO --(>700°C)--> 3Fe + 4CO₂' };
-                    return { product: 'Fe3O4', explanation: 'No reaction at low temp.', equation: 'No reaction' };
+                    if(temp === '400-700') return reagent === 'H2'
+                        ? { product: 'FeO', explanation: 'At 400–700°C, hydrogen reduces magnetite to iron(II) oxide.', equation: 'Fe₃O₄ + H₂ → 3FeO + H₂O' }
+                        : { product: 'FeO', explanation: 'At 400–700°C, carbon monoxide reduces magnetite to iron(II) oxide.', equation: 'Fe₃O₄ + CO → 3FeO + CO₂' };
+                    if(temp === '>700') return reagent === 'H2'
+                        ? { product: 'Fe', explanation: 'Above 700°C, hydrogen reduces magnetite to iron.', equation: 'Fe₃O₄ + 4H₂ → 3Fe + 4H₂O' }
+                        : { product: 'Fe', explanation: 'Above 700°C, carbon monoxide reduces magnetite to iron.', equation: 'Fe₃O₄ + 4CO → 3Fe + 4CO₂' };
+                    return { product: 'Fe3O4', explanation: 'At this lower temperature, no further reduction is expected in this exercise.', equation: 'Fe₃O₄ → Fe₃O₄' };
                 }
-                return { product: 'Fe', explanation: 'FeO reduction yields Fe.', equation: 'FeO + CO --> Fe + CO₂' };
+                if(temp !== '>700') return { product: 'FeO', explanation: 'Further reduction of iron(II) oxide to iron is shown above 700°C in this exercise.', equation: 'FeO → FeO' };
+                return reagent === 'H2'
+                    ? { product: 'Fe', explanation: 'Above 700°C, hydrogen reduces iron(II) oxide to iron.', equation: 'FeO + H₂ → Fe + H₂O' }
+                    : { product: 'Fe', explanation: 'Above 700°C, carbon monoxide reduces iron(II) oxide to iron.', equation: 'FeO + CO → Fe + CO₂' };
             } else {
                 if(reactant === 'Fe') {
-                    if(reagent === 'steam') return { product: 'Fe3O4', explanation: 'Steam at 500°C yields Fe₃O₄.', equation: '3Fe + 4H₂O --(500°C)--> Fe₃O₄ + 4H₂' };
-                    return { product: 'Fe3O4', explanation: 'Heating in air yields Fe₃O₄.', equation: '3Fe + 2O₂ --> Fe₃O₄' };
+                    if(reagent === 'steam') return { product: 'Fe3O4', explanation: 'At about 500°C, steam reacts with iron to form magnetite and hydrogen.', equation: '3Fe + 4H₂O(g) → Fe₃O₄ + 4H₂' };
+                    return { product: 'Fe3O4', explanation: 'Heating iron in oxygen forms magnetite.', equation: '3Fe + 2O₂ → Fe₃O₄' };
                 }
-                return { product: 'Fe2O3', explanation: 'Oxidation yields Fe₂O₃.', equation: '4FeO + O₂ --> 2Fe₂O₃' };
+                return { product: 'Fe2O3', explanation: 'Heating iron(II) oxide in oxygen forms iron(III) oxide.', equation: '4FeO + O₂ → 2Fe₂O₃' };
             }
         }
 
@@ -684,64 +1001,110 @@
             const container = document.getElementById('floatingXpContainer');
             const el = document.createElement('div');
             el.className = 'floating-xp';
-            el.innerText = `+${amount} XP 🔥`;
+            el.innerText = `+${amount} XP`;
             el.style.left = `${Math.random() * 60 + 20}%`;
             el.style.top = `${Math.random() * 40 + 30}%`;
             container.appendChild(el);
             setTimeout(() => el.remove(), 800);
         }
 
-        function updateTrainProgress() {
-            gameState.progressCount = Math.min(gameState.progressCount + 1, 5);
-            let percent = (gameState.progressCount / 5) * 100;
-            document.getElementById('trainProgressBar').style.width = `${percent}%`;
-            document.getElementById('trainIcon').style.left = `calc(${percent}% - 12px)`;
-            document.getElementById('progressText').innerText = `Progress: ${gameState.progressCount} / 5`;
+        function completeChallenge(key) {
+            if (!key || gameState.completedChallenges.has(key)) return false;
+            gameState.completedChallenges.add(key);
+            return true;
+        }
 
-            if(gameState.progressCount === 5) {
-                setTimeout(() => {
-                    document.getElementById('victoryModal').classList.remove('hidden');
-                    document.getElementById('victoryModal').classList.add('flex');
-                }, 500);
+        function renderProgress() {
+            gameState.progressCount = Math.min(gameState.completedChallenges.size, 5);
+            let percent = (gameState.progressCount / 5) * 100;
+            const bar = document.getElementById('trainProgressBar');
+            bar.style.width = `${percent}%`;
+            bar.setAttribute('aria-valuenow', gameState.progressCount);
+            document.getElementById('trainIcon').style.left = `calc(${percent}% - 12px)`;
+            document.getElementById('progressText').innerText = `Questions cleared: ${gameState.progressCount} / 5`;
+        }
+
+        function updateTrainProgress() {
+            renderProgress();
+            saveGameState();
+            if(gameState.progressCount === 5 && !gameState.victoryShown) {
+                gameState.victoryShown = true;
+                gameState.victoryPending = true;
             }
         }
 
         function closeVictoryModal() {
-            document.getElementById('victoryModal').classList.add('hidden');
-            document.getElementById('victoryModal').classList.remove('flex');
+            closeDialog('victoryModal');
         }
 
         function showModal(isSuccess, bannerText, desc, eq) {
+            gameState.retryAvailable = !isSuccess;
             document.getElementById('resBanner').innerText = bannerText;
             document.getElementById('resBanner').className = `text-base font-black mb-3 font-gaming py-2.5 rounded-xl shadow-md ${isSuccess ? 'bg-green-950 text-green-300 border border-green-500/40' : 'bg-red-950 text-red-300 border border-red-500/40'}`;
             document.getElementById('resDesc').innerText = desc;
             document.getElementById('resEquation').innerText = eq;
+            document.getElementById('resultActionBtn').innerText = isSuccess ? 'Next' : 'Try this question again';
             
             const memeContainer = document.getElementById('memeContainer');
             if(isSuccess) {
-                memeContainer.innerHTML = `<img src="https://media.giphy.com/media/xT5LMFZDsj0AKUDYTS/giphy.gif" alt="Success Meme" class="w-24 h-24 object-cover rounded-xl border border-green-500/40 shadow">`;
+                memeContainer.innerHTML = `<i aria-hidden="true" class="fa-solid fa-circle-check text-3xl text-green-300"></i>`;
             } else {
-                memeContainer.innerHTML = `<img src="zizo-fail.jpg" alt="Zizo Fail Meme" class="w-24 h-24 object-cover rounded-xl border border-red-500/40 shadow">`;
+                memeContainer.innerHTML = `<img src="zizo-fail.jpg" alt="Reaction failed" loading="lazy" decoding="async">`;
             }
 
-            document.getElementById('resultModal').classList.remove('hidden');
-            document.getElementById('resultModal').classList.add('flex');
+            openDialog('resultModal');
         }
 
         function closeResultModal() {
-            document.getElementById('resultModal').classList.add('hidden');
-            document.getElementById('resultModal').classList.remove('flex');
+            const showVictory = gameState.victoryPending;
+            const retry = gameState.retryAvailable;
+            gameState.victoryPending = false;
+            gameState.retryAvailable = false;
+            closeDialog('resultModal');
+            if (retry) {
+                if (gameState.mode === 'reactions') openDialog('reactGuessModal');
+                return;
+            }
             resetGameTurn();
+            if (showVictory) openDialog('victoryModal');
+        }
+
+        function startNewGame() {
+            if (!window.confirm('Start a new game and clear your XP and progress?\nهنبدأ من الأول؟')) return;
+            gameState.score = 0;
+            gameState.progressCount = 0;
+            gameState.completedChallenges.clear();
+            gameState.victoryShown = false;
+            gameState.victoryPending = false;
+            document.getElementById('scoreText').innerText = '0';
+            updateRankDisplay();
+            resetGameTurn();
+            renderProgress();
+            try { localStorage.removeItem(gameStorageKey); } catch (error) { /* Storage may be disabled. */ }
         }
 
         function resetGameTurn() {
             gameState.selectedReactant = null;
-            document.querySelectorAll('.card-btn').forEach(c => c.classList.remove('fn-card-selected'));
+            gameState.activeQuestionKey = null;
+            gameState.agentType = null;
+            gameState.reagent = null;
+            gameState.tempRange = null;
+            document.querySelectorAll('.card-btn').forEach(c => {
+                c.classList.remove('fn-card-selected');
+                c.setAttribute('aria-pressed', 'false');
+            });
             document.getElementById('reactantSlot').innerHTML = `<i class="fa-solid fa-arrow-down text-gray-600 animate-pulse"></i><span class="text-xs text-gray-400">Select card below</span>`;
             document.getElementById('typeBtns').classList.add('hidden');
             document.getElementById('agentConfig').classList.add('hidden');
             document.getElementById('predPlaceholder').classList.remove('hidden');
+            document.getElementById('predPlaceholder').innerHTML = '<i class="fa-solid fa-circle-question text-monorail-yellow/40"></i><span>Select a compound card first</span>';
             document.getElementById('predOptions').classList.add('hidden');
+            document.getElementById('stepText').innerText = 'Choose an iron compound card below — يلا نبدأ!';
+            document.getElementById('oxStateMeterText').innerText = '0';
+            const meter = document.getElementById('oxStateMeterBar');
+            meter.style.width = '0%';
+            meter.className = 'h-full bg-monorail-yellow w-0 transition-[width] duration-300';
+            meter.parentElement.setAttribute('aria-valuenow', '0');
         }
     </script>
 </body>
