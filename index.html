@@ -181,13 +181,6 @@
             </div>
 
             <div class="flex items-center gap-1.5">
-                <!-- عداد الزوار -->
-                <div class="flex items-center gap-1.5 text-xs font-bold bg-black/40 px-2.5 py-1 rounded-xl border border-cyan-500/40 shadow-inner" title="عدد الزملاء والزوار اللي دخلوا">
-                    <i class="fa-solid fa-users text-cyan-400"></i>
-                    <span class="text-gray-400 hidden sm:inline">الزوار:</span>
-                    <span id="visitorCountText" class="text-cyan-300 font-black text-sm font-gaming">1</span>
-                </div>
-
                 <button onclick="startRandomChallenge()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white px-2.5 py-1.5 rounded-xl text-xs font-gaming font-black shadow-md flex items-center gap-1" title="تحدي عشوائي">
                     <span>🎰 تحدي عشوائي</span>
                 </button>
@@ -277,7 +270,7 @@
             <h3 class="text-base font-black text-monorail-yellow font-gaming">🧪 Iron Reactions Mode</h3>
             <p id="reactModeSubtext" class="text-xs text-gray-400 mt-1 max-w-[240px]">Select a card below to test preparation & chemical properties!</p>
             
-            <div class="flex flex-col gap-2 w-full max-w-xs mt-3">
+            <div class="flex flex-col gap-2.5 w-full max-w-xs mt-3">
                 <button onclick="startChainBuilderModal()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-black font-black py-2.5 px-4 rounded-xl text-xs font-gaming shadow-md flex items-center justify-center gap-2">
                     <i class="fa-solid fa-link"></i>
                     <span>كون السلسلة ⛓️</span>
@@ -286,6 +279,12 @@
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     <span>Paranoia Rails ⚡</span>
                 </button>
+                
+                <div class="bg-black/70 border border-cyan-500/40 rounded-xl py-2 px-4 flex items-center justify-center gap-2 shadow-inner">
+                    <i class="fa-solid fa-users text-cyan-400"></i>
+                    <span class="text-xs text-gray-300 font-bold">الزوار اللي دخلوا:</span>
+                    <span id="visitorCountText" class="text-cyan-300 font-black text-sm font-gaming">1</span>
+                </div>
             </div>
         </div>
 
@@ -405,7 +404,7 @@
         </div>
     </div>
 
-    <!-- شهادة الفوز (تظهر مرة واحدة فقط ولا تتكرر) -->
+    <!-- شهادة الفوز -->
     <div id="victoryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-gradient-to-b from-[#1a1c2e] via-[#0f141f] to-[#05070a] border-2 border-monorail-yellow rounded-3xl max-w-sm w-full p-6 text-center shadow-[0_0_40px_rgba(255,208,0,0.4)] relative">
             <div class="w-16 h-16 bg-monorail-yellow/20 border border-monorail-yellow rounded-full flex items-center justify-center mx-auto mb-3 text-monorail-yellow text-3xl">👑</div>
@@ -494,11 +493,10 @@
             });
         });
 
-        // نظام عداد الزوار (يزيد مع كل فتحة أو زيارة جديدة للمتصفح)
         function initVisitorCounter() {
             let visits = localStorage.getItem('monorail_visitors');
             if (!visits) {
-                visits = 142; // رقم افتتاحي حماسي للبداية
+                visits = 142;
             } else {
                 visits = parseInt(visits) + 1;
             }
@@ -623,7 +621,7 @@
             }
         }
 
-        /* --- كون السلسلة --- */
+        /* --- كون السلسلة (مرن ومصحح بالكامل) --- */
         function startChainBuilderModal() {
             gameState.chainStep = 1;
             gameState.chainData = { reactant: null, condition: null, temp: null, product: null };
@@ -656,11 +654,11 @@
                 grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('reactant', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">📦 ${opt}</button>`).join('');
             } else if(gameState.chainStep === 2) {
                 indicator.innerText = "Step 2: Choose Condition / Reagent (الشرط أو العامل)";
-                const options = ['Thermal Decomposition (no air)', '+ CO (Reduction)', '+ O₂ (Oxidation)', '+ Steam (500°C)'];
+                const options = ['Thermal Decomposition', 'Reduction with CO', 'Oxidation with O2', 'Reaction with Steam'];
                 grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('condition', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">⚙️ ${opt}</button>`).join('');
             } else if(gameState.chainStep === 3) {
                 indicator.innerText = "Step 3: Choose Temperature (درجة الحرارة)";
-                const options = ['>700°C', '400-700°C', '230-300°C', '500°C', 'No Heat / RT'];
+                const options = ['>700°C', '400-700°C', '230-300°C', '500°C', 'No Heat'];
                 grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('temp', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">🌡️ ${opt}</button>`).join('');
             } else if(gameState.chainStep === 4) {
                 indicator.innerText = "Step 4: Choose Final Product (الناتج النهائي)";
@@ -682,13 +680,47 @@
         function verifyBuiltChain() {
             closeChainBuilderModal();
             const d = gameState.chainData;
-            audioFX.playCustomSound('success');
-            gameState.score += 35;
-            document.getElementById('scoreText').innerText = gameState.score;
-            updateRankDisplay();
-            triggerFloatingXP(35);
-            updateTrainProgress();
-            showModal(true, "سلسلة صحيحة ومبنية باحتراف! ⛓️🔥", "تم بناء السلسلة الكيميائية بنجاح باهر وكيميائي أسطوري!", `${d.reactant} --(${d.condition} | ${d.temp})--> ${d.product}`);
+
+            let isCorrect = false;
+            let correctEq = "";
+
+            if ((d.reactant === 'FeCO₃' || d.reactant === 'FeCO3') && d.product === 'FeO') {
+                isCorrect = true;
+                correctEq = "FeCO₃ --(Δ in no air)--> FeO + CO₂↑";
+            }
+            else if ((d.reactant === 'Fe₂O₃' || d.reactant === 'Fe2O3') && (d.product === 'Fe' || d.product === 'حديد')) {
+                isCorrect = true;
+                correctEq = "Fe₂O₃ + 3CO --(>700°C)--> 2Fe + 3CO₂";
+            }
+            else if ((d.reactant === 'Fe₂O₃' || d.reactant === 'Fe2O3') && (d.product === 'FeO')) {
+                isCorrect = true;
+                correctEq = "Fe₂O₃ + CO --(400-700°C)--> 2FeO + CO₂";
+            }
+            else if ((d.reactant === 'Fe₂O₃' || d.reactant === 'Fe2O3') && (d.product === 'Fe3O4' || d.product === 'Fe₃O₄')) {
+                isCorrect = true;
+                correctEq = "3Fe₂O₃ + CO --(230-300°C)--> 2Fe₃O₄ + CO₂";
+            }
+            else if (d.reactant === 'Fe' && (d.product === 'Fe3O4' || d.product === 'Fe₃O₄')) {
+                isCorrect = true;
+                correctEq = "3Fe + 4H₂O --(500°C)--> Fe₃O₄ + 4H₂";
+            }
+            else if (d.reactant === 'FeO' && (d.product === 'Fe2O3' || d.product === 'Fe₂O₃')) {
+                isCorrect = true;
+                correctEq = "4FeO + O₂ --(Heat)--> 2Fe₂O₃";
+            }
+
+            if(isCorrect) {
+                audioFX.playCustomSound('success');
+                gameState.score += 35;
+                document.getElementById('scoreText').innerText = gameState.score;
+                updateRankDisplay();
+                triggerFloatingXP(35);
+                updateTrainProgress();
+                showModal(true, "سلسلة صحيحة ومبنية باحتراف! ⛓️🔥", "تم بناء السلسلة الكيميائية بنجاح باهر وكيميائي أسطوري!", `${d.reactant} --(${d.condition} | ${d.temp})--> ${d.product}\n${correctEq}`);
+            } else {
+                audioFX.playCustomSound('error');
+                showModal(false, "سلسلة غلط يا أسطورة! ❌", `اختيارك: ${d.reactant} --(${d.condition} | ${d.temp})--> ${d.product}\nالروابط غير متوافقة كيميائياً مع منهج الحديد!`, "خطأ في بناء السلسلة");
+            }
         }
 
         /* --- Paranoia Rails --- */
@@ -803,7 +835,7 @@
                 updateRankDisplay();
                 triggerFloatingXP(25);
                 updateTrainProgress();
-                showModal(true, "عالمييييييي يا لوكسسسس! 🔥", actual.explanation, actual.equation);
+                showModal(true, "عالميييييييي يا لوكسسسسس! 🔥", actual.explanation, actual.equation);
             } else {
                 audioFX.playCustomSound('error');
                 showModal(false, "هديك بالزوزوووو خد صفر! ❌", `Correct: ${actual.product}\n${actual.explanation}`, actual.equation);
