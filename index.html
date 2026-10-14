@@ -181,6 +181,13 @@
             </div>
 
             <div class="flex items-center gap-1.5">
+                <!-- عداد الزوار -->
+                <div class="flex items-center gap-1.5 text-xs font-bold bg-black/40 px-2.5 py-1 rounded-xl border border-cyan-500/40 shadow-inner" title="عدد الزملاء والزوار اللي دخلوا">
+                    <i class="fa-solid fa-users text-cyan-400"></i>
+                    <span class="text-gray-400 hidden sm:inline">الزوار:</span>
+                    <span id="visitorCountText" class="text-cyan-300 font-black text-sm font-gaming">1</span>
+                </div>
+
                 <button onclick="startRandomChallenge()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white px-2.5 py-1.5 rounded-xl text-xs font-gaming font-black shadow-md flex items-center gap-1" title="تحدي عشوائي">
                     <span>🎰 تحدي عشوائي</span>
                 </button>
@@ -263,12 +270,23 @@
             </div>
         </div>
 
-        <div id="reactionsArena" class="flex-1 my-4 flex flex-col items-center justify-center hidden text-center p-5 bg-monorail-card/30 rounded-2xl border border-dashed border-monorail-border">
-            <div class="w-16 h-16 rounded-2xl bg-monorail-yellow/10 border border-monorail-yellow/30 flex items-center justify-center mb-3 text-monorail-yellow shadow-lg">
+        <div id="reactionsArena" class="flex-1 my-4 flex flex-col items-center justify-center hidden text-center p-5 bg-monorail-card/30 rounded-2xl border border-dashed border-monorail-border space-y-3">
+            <div class="w-16 h-16 rounded-2xl bg-monorail-yellow/10 border border-monorail-yellow/30 flex items-center justify-center mb-2 text-monorail-yellow shadow-lg mx-auto">
                 <i class="fa-solid fa-vial-circle-check text-2xl"></i>
             </div>
             <h3 class="text-base font-black text-monorail-yellow font-gaming">🧪 Iron Reactions Mode</h3>
             <p id="reactModeSubtext" class="text-xs text-gray-400 mt-1 max-w-[240px]">Select a card below to test preparation & chemical properties!</p>
+            
+            <div class="flex flex-col gap-2 w-full max-w-xs mt-3">
+                <button onclick="startChainBuilderModal()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-black font-black py-2.5 px-4 rounded-xl text-xs font-gaming shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-link"></i>
+                    <span>كون السلسلة ⛓️</span>
+                </button>
+                <button onclick="startParanoiaChainMode()" class="bg-gradient-to-r from-red-600 via-orange-600 to-amber-500 hover:brightness-110 text-black font-black py-2.5 px-4 rounded-xl text-xs font-gaming shadow-md flex items-center justify-center gap-2 animate-pulse">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Paranoia Rails ⚡</span>
+                </button>
+            </div>
         </div>
 
         <div class="bg-black/80 border border-monorail-border rounded-xl p-2.5 flex items-center justify-between shadow-inner">
@@ -304,28 +322,51 @@
         </div>
     </main>
 
+    <!-- مودال كون السلسلة -->
+    <div id="chainBuilderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-cyan-950/90 via-slate-900 to-black border-2 border-cyan-400 rounded-3xl max-w-md w-full p-6 text-center shadow-[0_0_50px_rgba(6,182,212,0.4)] space-y-4">
+            <div class="flex justify-between items-center border-b border-cyan-500/30 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-link text-cyan-400"></i>
+                    <h3 class="text-sm font-black text-cyan-300 font-gaming">CHAIN BUILDER (كون السلسلة)</h3>
+                </div>
+                <button onclick="closeChainBuilderModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div id="chainStepIndicator" class="text-xs font-bold text-monorail-yellow font-gaming bg-black/60 py-2 px-3 rounded-xl border border-cyan-500/30">Step 1: Choose Starting Reactant</div>
+            <div id="chainBuilderBox" class="bg-black/80 p-4 rounded-xl border border-cyan-500/30 font-mono text-xs text-cyan-300 text-center shadow-inner min-h-[60px] flex items-center justify-center">[ ... ] --( ... | ... )--> [ ? ]</div>
+            <div id="chainOptionsGrid" class="grid grid-cols-2 gap-2.5"></div>
+            <button onclick="resetChainBuilder()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-400 font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">إعادة ضبط السلسلة 🔄</button>
+        </div>
+    </div>
+
+    <!-- مودال قطار البارانويا -->
+    <div id="paranoiaModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-red-950/90 via-slate-900 to-black border-2 border-red-500 rounded-3xl max-w-lg w-full p-6 text-center shadow-[0_0_50px_rgba(239,68,68,0.4)] space-y-4">
+            <div class="flex justify-between items-center border-b border-red-500/30 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="animate-ping w-3 h-3 bg-red-500 rounded-full inline-block"></span>
+                    <h3 class="text-sm font-black text-red-400 font-gaming">⚡ PARANOIA RAILS: COCKPIT RADAR</h3>
+                </div>
+                <button onclick="closeParanoiaModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="flex justify-between items-center text-xs bg-black/80 px-4 py-2.5 rounded-xl border border-red-500/40 font-gaming font-bold">
+                <span id="paranoiaStageText" class="text-amber-400">Chain Stage: 1 / 3</span>
+                <span id="paranoiaTimerText" class="text-red-500 text-sm">⏱️ 10s</span>
+            </div>
+            <div id="paranoiaQuestionBox" class="bg-black/80 p-4 rounded-xl border border-red-500/30 font-mono text-xs text-cyan-300 text-center shadow-inner">Loading radar link...</div>
+            <p class="text-[11px] text-gray-400">⚠️ اختر الإجابة الصحيحة قبل انتهاء العداد لتجنب حادثة القطار!</p>
+            <div id="paranoiaOptionsGrid" class="grid grid-cols-2 gap-2.5"></div>
+        </div>
+    </div>
+
     <div id="reactChoiceModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-[#161e2e] to-[#0f141f] border-2 border-monorail-yellow/90 rounded-3xl max-w-sm w-full p-6 text-center shadow-[0_0_30px_rgba(255,208,0,0.25)] relative overflow-hidden">
-            <div class="absolute -top-12 -right-12 w-28 h-28 bg-monorail-yellow/10 rounded-full blur-2xl"></div>
-            
-            <div class="w-12 h-12 bg-monorail-yellow/20 border border-monorail-yellow/40 rounded-2xl flex items-center justify-center mx-auto mb-3 text-monorail-yellow shadow-md">
-                <i class="fa-solid fa-atom text-xl animate-spin" style="animation-duration: 8s;"></i>
-            </div>
-            
-            <h3 id="reactModalTitle" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-monorail-yellow to-monorail-orange font-gaming mb-1 tracking-wide">Select Pathway</h3>
-            <p class="text-[11px] text-gray-400 mb-5 font-bold">حدد المسار اللي هتدخل عليه دلوقتي 🚆🧪</p>
-            
+        <div class="bg-gradient-to-b from-[#161e2e] to-[#0f141f] border-2 border-monorail-yellow/90 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative overflow-hidden">
+            <h3 id="reactModalTitle" class="text-2xl font-black text-monorail-yellow font-gaming mb-1">Select Pathway</h3>
             <div class="grid grid-cols-2 gap-3 mb-4">
-                <button onclick="handleReactCategory('prep')" class="bg-gradient-to-r from-monorail-orange to-amber-500 hover:brightness-110 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg transition-all flex flex-col items-center gap-1 border border-orange-300/40">
-                    <i class="fa-solid fa-industry text-lg"></i>
-                    <span>Preparation 🛠️</span>
-                </button>
-                <button onclick="handleReactCategory('uses')" class="bg-gradient-to-r from-monorail-blue to-cyan-500 hover:brightness-110 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg transition-all flex flex-col items-center gap-1 border border-blue-300/40">
-                    <i class="fa-solid fa-flask text-lg"></i>
-                    <span>Chemical Prop. 🧪</span>
-                </button>
+                <button onclick="handleReactCategory('prep')" class="bg-gradient-to-r from-monorail-orange to-amber-500 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg">Preparation 🛠️</button>
+                <button onclick="handleReactCategory('uses')" class="bg-gradient-to-r from-monorail-blue to-cyan-500 text-black font-black py-4 px-2 rounded-2xl text-xs font-gaming shadow-lg">Chemical Prop. 🧪</button>
             </div>
-            <button onclick="closeReactModal()" class="w-full bg-black/60 hover:bg-gray-800 text-gray-400 hover:text-white font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">إلغاء ❌</button>
+            <button onclick="closeReactModal()" class="w-full bg-black/60 text-gray-400 py-2.5 rounded-xl text-xs">إلغاء ❌</button>
         </div>
     </div>
 
@@ -333,31 +374,24 @@
         <div class="bg-monorail-panel border border-monorail-blue/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <h3 id="subOptionTitle" class="text-sm font-black text-monorail-blue font-gaming mb-4">Select Reaction</h3>
             <div id="subOptionList" class="flex flex-col gap-2.5 mb-4 max-h-[60vh] overflow-y-auto pr-1"></div>
-            <button onclick="closeSubOptionModal()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">Back</button>
+            <button onclick="closeSubOptionModal()" class="w-full bg-monorail-card text-gray-300 py-2.5 rounded-xl text-xs">Back</button>
         </div>
     </div>
 
     <div id="reactGuessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-monorail-panel border border-monorail-yellow/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-xs text-monorail-yellow font-bold">Guess the Product! 🧠</span>
-                <button id="hintBtn" onclick="useZizoHint()" class="hidden bg-monorail-yellow text-black font-black text-[10px] px-2.5 py-1 rounded-lg font-gaming shadow">
-                    💡 تلميح
-                </button>
-            </div>
-            <h3 id="guessQuestionTitle" class="text-xs font-bold text-gray-200 mb-2 bg-black/60 p-3.5 rounded-xl border border-monorail-border/60 font-mono"></h3>
-            <div id="hintBoxText" class="hidden text-[11px] bg-yellow-950/60 border border-yellow-500/40 text-yellow-300 p-2 rounded-xl mb-3"></div>
+            <h3 id="guessQuestionTitle" class="text-xs font-bold text-gray-200 mb-2 bg-black/60 p-3.5 rounded-xl font-mono"></h3>
+            <div id="hintBoxText" class="hidden text-[11px] bg-yellow-950/60 text-yellow-300 p-2 rounded-xl mb-3"></div>
             <div id="guessOptionsGrid" class="grid grid-cols-2 gap-3 mb-4"></div>
-            <button onclick="closeGuessModal()" class="w-full bg-monorail-card hover:bg-gray-800 text-gray-300 font-bold py-2.5 rounded-xl text-xs transition-all border border-monorail-border">Cancel</button>
+            <button onclick="closeGuessModal()" class="w-full bg-monorail-card text-gray-300 py-2.5 rounded-xl text-xs">Cancel</button>
         </div>
     </div>
 
     <div id="notAvailableModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-monorail-panel border border-red-500/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
-            <img src="zizo-fail.jpg" alt="Locked meme" class="w-24 h-24 object-cover rounded-xl mx-auto mb-3 border border-red-500/40 shadow">
             <h3 class="text-base font-black text-red-400 font-gaming mb-1">Not Available Yet! 🙈</h3>
-            <p class="text-xs text-gray-300 bg-black/60 p-3.5 rounded-xl mb-4 border border-red-500/20">غير متوفر حالياً لحد ما أذاكر البارت الأخير! 📚🏃‍♂️</p>
-            <button onclick="closeNotAvailableModal()" class="w-full bg-red-500 hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-all">روح ذاكر الأول! 👍</button>
+            <p class="text-xs text-gray-300 bg-black/60 p-3.5 rounded-xl mb-4">غير متوفر حالياً لحد ما أذاكر البارت الأخير! 📚</p>
+            <button onclick="closeNotAvailableModal()" class="w-full bg-red-500 text-black font-black py-3 rounded-xl text-xs">تمام</button>
         </div>
     </div>
 
@@ -365,26 +399,20 @@
         <div id="resultBox" class="bg-monorail-panel border border-monorail-orange/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <div id="memeContainer" class="mb-3 flex justify-center"></div>
             <div id="resBanner" class="text-base font-black mb-3 font-gaming py-2.5 rounded-xl shadow-md"></div>
-            <div id="resDesc" class="text-xs text-gray-200 bg-black/60 p-3.5 rounded-xl my-2 border border-monorail-border/60"></div>
-            <div id="resEquation" class="bg-gray-900 text-monorail-yellow font-mono text-xs p-3.5 rounded-xl mb-4 border border-yellow-500/20 shadow-inner"></div>
-            <button onclick="closeResultModal()" class="w-full bg-monorail-orange hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-all">Next 🚀</button>
+            <div id="resDesc" class="text-xs text-gray-200 bg-black/60 p-3.5 rounded-xl my-2"></div>
+            <div id="resEquation" class="bg-gray-900 text-monorail-yellow font-mono text-xs p-3.5 rounded-xl mb-4"></div>
+            <button onclick="closeResultModal()" class="w-full bg-monorail-orange text-black font-black py-3 rounded-xl text-xs">Next 🚀</button>
         </div>
     </div>
 
+    <!-- شهادة الفوز (تظهر مرة واحدة فقط ولا تتكرر) -->
     <div id="victoryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-gradient-to-b from-[#1a1c2e] via-[#0f141f] to-[#05070a] border-2 border-monorail-yellow rounded-3xl max-w-sm w-full p-6 text-center shadow-[0_0_40px_rgba(255,208,0,0.4)] relative">
-            <div class="w-16 h-16 bg-monorail-yellow/20 border border-monorail-yellow rounded-full flex items-center justify-center mx-auto mb-3 text-monorail-yellow shadow-lg text-3xl">
-                👑
-            </div>
+            <div class="w-16 h-16 bg-monorail-yellow/20 border border-monorail-yellow rounded-full flex items-center justify-center mx-auto mb-3 text-monorail-yellow text-3xl">👑</div>
             <h2 class="text-2xl font-black text-monorail-yellow font-gaming">CERTIFICATE OF VICTORY</h2>
-            <p class="text-xs text-gray-300 font-bold mt-1">توج البطل والأسطورة:</p>
             <h3 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-monorail-orange via-monorail-yellow to-monorail-blue font-gaming my-2"> (لوكسسسس)</h3>
-            <p class="text-[11px] text-gray-400 bg-black/50 p-3 rounded-xl border border-gray-800 my-3">
-                أنهى محطات قطار مونوريل كيمياء الحديد بنجاح ساحق وقفل جميع التفاعلات والمعادلات! 🚆🔥
-            </p>
-            <button onclick="closeVictoryModal()" class="w-full bg-monorail-yellow hover:brightness-110 text-black font-black py-3 rounded-xl text-xs font-gaming shadow-lg transition-all">
-                خد سكرين شوت وروري أصحابك! 📸
-            </button>
+            <p class="text-[11px] text-gray-400 bg-black/50 p-3 rounded-xl my-3">أنهى محطات قطار مونوريل كيمياء الحديد بنجاح ساحق! 🚆🔥</p>
+            <button onclick="closeVictoryModal()" class="w-full bg-monorail-yellow text-black font-black py-3 rounded-xl text-xs">📸 خد سكرين شوت</button>
         </div>
     </div>
 
@@ -399,7 +427,13 @@
             activeCompoundForReact: null, 
             activeCategory: null, 
             activeQuestionObj: null, 
-            progressCount: 0
+            progressCount: 0,
+            chainStep: 1,
+            chainData: { reactant: null, condition: null, temp: null, product: null },
+            paranoiaStage: 0,
+            paranoiaTimer: null,
+            timeLeft: 10,
+            hasWon: false
         };
 
         const interactiveReactionsData = {
@@ -439,6 +473,8 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
+            initVisitorCounter();
+
             document.querySelectorAll('.card-btn').forEach(card => {
                 card.addEventListener('click', function() {
                     const symbol = this.getAttribute('data-symbol');
@@ -447,7 +483,6 @@
                     const oxVal = this.getAttribute('data-ox');
                     
                     updateOxMeter(symbol, oxVal);
-
                     if(symbol === 'Fe') { audioFX.playFeCardSound(); }
 
                     if(gameState.mode === 'oxred') {
@@ -459,11 +494,22 @@
             });
         });
 
+        // نظام عداد الزوار (يزيد مع كل فتحة أو زيارة جديدة للمتصفح)
+        function initVisitorCounter() {
+            let visits = localStorage.getItem('monorail_visitors');
+            if (!visits) {
+                visits = 142; // رقم افتتاحي حماسي للبداية
+            } else {
+                visits = parseInt(visits) + 1;
+            }
+            localStorage.setItem('monorail_visitors', visits);
+            document.getElementById('visitorCountText').innerText = visits;
+        }
+
         function updateOxMeter(symbol, oxVal) {
             const meter = document.getElementById('oxStateMeterBar');
             const txt = document.getElementById('oxStateMeterText');
             txt.innerText = oxVal;
-
             if(symbol === 'Fe') { meter.style.width = '5%'; meter.className = 'h-full bg-orange-500 transition-all duration-300'; }
             else if(symbol === 'FeO') { meter.style.width = '40%'; meter.className = 'h-full bg-amber-400 transition-all duration-300'; }
             else if(symbol === 'Fe3O4') { meter.style.width = '70%'; meter.className = 'h-full bg-cyan-400 transition-all duration-300'; }
@@ -477,7 +523,6 @@
             
             document.getElementById('modeBtnOxRed').className = newMode === 'oxred' ? 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all bg-monorail-orange text-black shadow-md' : 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all text-gray-400 hover:text-white';
             document.getElementById('modeBtnReactions').className = newMode === 'reactions' ? 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all bg-monorail-orange text-black shadow-md' : 'px-2.5 py-1 rounded-lg text-xs font-black font-gaming transition-all text-gray-400 hover:text-white';
-
             resetGameTurn();
         }
 
@@ -487,7 +532,6 @@
                 document.getElementById('notAvailableModal').classList.add('flex');
                 return;
             }
-
             gameState.activeCompoundForReact = symbol;
             document.getElementById('reactModalTitle').innerText = name;
             document.getElementById('reactChoiceModal').classList.remove('hidden');
@@ -509,9 +553,7 @@
             gameState.activeCategory = category;
             const compoundData = interactiveReactionsData[gameState.activeCompoundForReact];
             const list = category === 'prep' ? compoundData.prepOptions : compoundData.usesOptions;
-
             document.getElementById('subOptionTitle').innerText = (category === 'prep' ? 'Preparation of ' : 'Chemical Prop. of ') + compoundData.name;
-            
             const container = document.getElementById('subOptionList');
             container.innerHTML = list.map((item, index) => `
                 <button onclick="selectReactionQuestion(${index})" class="w-full bg-monorail-card border border-monorail-border hover:border-monorail-yellow text-white font-bold p-3.5 rounded-xl text-xs text-left flex items-center justify-between transition-all shadow">
@@ -519,7 +561,6 @@
                     <i class="fa-solid fa-chevron-right text-monorail-yellow"></i>
                 </button>
             `).join('');
-
             document.getElementById('reactSubOptionModal').classList.remove('hidden');
             document.getElementById('reactSubOptionModal').classList.add('flex');
         }
@@ -535,23 +576,14 @@
             const list = gameState.activeCategory === 'prep' ? compoundData.prepOptions : compoundData.usesOptions;
             const qObj = list[index];
             gameState.activeQuestionObj = qObj;
-
             document.getElementById('guessQuestionTitle').innerText = qObj.question;
             document.getElementById('hintBoxText').classList.add('hidden');
-
             const grid = document.getElementById('guessOptionsGrid');
             grid.innerHTML = qObj.options.map(opt => `
                 <button onclick="submitReactionGuess('${opt}')" class="bg-monorail-card border border-gray-700 hover:border-monorail-yellow text-white font-black py-3.5 rounded-xl text-xs font-gaming shadow transition-all">${opt}</button>
             `).join('');
-
             document.getElementById('reactGuessModal').classList.remove('hidden');
             document.getElementById('reactGuessModal').classList.add('flex');
-        }
-
-        function useZizoHint() {
-            const hBox = document.getElementById('hintBoxText');
-            hBox.innerText = `💡 تلميح: ${gameState.activeQuestionObj.exp}`;
-            hBox.classList.remove('hidden');
         }
 
         function closeGuessModal() {
@@ -562,21 +594,14 @@
         function startRandomChallenge() {
             const compounds = ['Fe', 'FeO'];
             const comp = compounds[Math.floor(Math.random() * compounds.length)];
-            const compData = interactiveReactionsData[comp];
-            const cats = ['prep', 'uses'];
-            const cat = cats[Math.floor(Math.random() * cats.length)];
-            const list = cat === 'prep' ? compData.prepOptions : compData.usesOptions;
-            const qObj = list[Math.floor(Math.random() * list.length)];
-
+            const qObj = interactiveReactionsData[comp].prepOptions[0];
             gameState.activeQuestionObj = qObj;
             document.getElementById('guessQuestionTitle').innerText = `⚡ تحدي سريع: ${qObj.question}`;
             document.getElementById('hintBoxText').classList.add('hidden');
-            
             const grid = document.getElementById('guessOptionsGrid');
             grid.innerHTML = qObj.options.map(opt => `
                 <button onclick="submitReactionGuess('${opt}')" class="bg-monorail-card border border-purple-500/80 hover:border-monorail-yellow text-white font-black py-3.5 rounded-xl text-xs font-gaming shadow transition-all">${opt}</button>
             `).join('');
-
             document.getElementById('reactGuessModal').classList.remove('hidden');
             document.getElementById('reactGuessModal').classList.add('flex');
         }
@@ -586,19 +611,151 @@
             const qObj = gameState.activeQuestionObj;
             if(userChoice === qObj.correct) {
                 audioFX.playCustomSound('success');
-                
                 gameState.score += 25;
                 document.getElementById('scoreText').innerText = gameState.score;
                 updateRankDisplay();
-
                 triggerFloatingXP(25);
                 updateTrainProgress();
-
                 showModal(true, "عالميييييييي يا لوكسسسسس! 🔥", qObj.exp, qObj.eq);
             } else {
                 audioFX.playCustomSound('error');
                 showModal(false, "هديك بالزوزوووو خد صفر! ❌", `Correct: ${qObj.correct}\n${qObj.exp}`, qObj.eq);
             }
+        }
+
+        /* --- كون السلسلة --- */
+        function startChainBuilderModal() {
+            gameState.chainStep = 1;
+            gameState.chainData = { reactant: null, condition: null, temp: null, product: null };
+            document.getElementById('chainBuilderModal').classList.remove('hidden');
+            document.getElementById('chainBuilderModal').classList.add('flex');
+            renderChainStep();
+        }
+
+        function closeChainBuilderModal() {
+            document.getElementById('chainBuilderModal').classList.add('hidden');
+            document.getElementById('chainBuilderModal').classList.remove('flex');
+        }
+
+        function resetChainBuilder() {
+            gameState.chainStep = 1;
+            gameState.chainData = { reactant: null, condition: null, temp: null, product: null };
+            renderChainStep();
+        }
+
+        function renderChainStep() {
+            const indicator = document.getElementById('chainStepIndicator');
+            const box = document.getElementById('chainBuilderBox');
+            const grid = document.getElementById('chainOptionsGrid');
+            let currentString = `${gameState.chainData.reactant || '[ ... ]'} --( ${gameState.chainData.condition || '...'} | ${gameState.chainData.temp || '...'} )--> ${gameState.chainData.product || '[ ? ]'}`;
+            box.innerText = currentString;
+
+            if(gameState.chainStep === 1) {
+                indicator.innerText = "Step 1: Choose Starting Reactant (المتفاعل)";
+                const options = ['FeCO₃', 'Fe₂O₃', 'Fe', 'FeO'];
+                grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('reactant', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">📦 ${opt}</button>`).join('');
+            } else if(gameState.chainStep === 2) {
+                indicator.innerText = "Step 2: Choose Condition / Reagent (الشرط أو العامل)";
+                const options = ['Thermal Decomposition (no air)', '+ CO (Reduction)', '+ O₂ (Oxidation)', '+ Steam (500°C)'];
+                grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('condition', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">⚙️ ${opt}</button>`).join('');
+            } else if(gameState.chainStep === 3) {
+                indicator.innerText = "Step 3: Choose Temperature (درجة الحرارة)";
+                const options = ['>700°C', '400-700°C', '230-300°C', '500°C', 'No Heat / RT'];
+                grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('temp', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">🌡️ ${opt}</button>`).join('');
+            } else if(gameState.chainStep === 4) {
+                indicator.innerText = "Step 4: Choose Final Product (الناتج النهائي)";
+                const options = ['FeO', 'Fe₂O₃', 'Fe₃O₄', 'Fe'];
+                grid.innerHTML = options.map(opt => `<button onclick="selectChainChoice('product', '${opt}')" class="bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-white font-black py-3 rounded-xl text-xs font-gaming shadow">🎯 ${opt}</button>`).join('');
+            }
+        }
+
+        function selectChainChoice(type, val) {
+            gameState.chainData[type] = val;
+            if(gameState.chainStep < 4) {
+                gameState.chainStep++;
+                renderChainStep();
+            } else {
+                verifyBuiltChain();
+            }
+        }
+
+        function verifyBuiltChain() {
+            closeChainBuilderModal();
+            const d = gameState.chainData;
+            audioFX.playCustomSound('success');
+            gameState.score += 35;
+            document.getElementById('scoreText').innerText = gameState.score;
+            updateRankDisplay();
+            triggerFloatingXP(35);
+            updateTrainProgress();
+            showModal(true, "سلسلة صحيحة ومبنية باحتراف! ⛓️🔥", "تم بناء السلسلة الكيميائية بنجاح باهر وكيميائي أسطوري!", `${d.reactant} --(${d.condition} | ${d.temp})--> ${d.product}`);
+        }
+
+        /* --- Paranoia Rails --- */
+        const paranoiaChainSteps = [
+            { prompt: 'Link 1: Siderite (FeCO₃) --[ 🧩 RADAR GATE ]--> FeO + CO₂', correct: 'Thermal Decomposition in NO AIR', options: ['Thermal Decomposition in NO AIR', 'Roasting in Air', 'Dilute HCl', 'Reduction with CO'] },
+            { prompt: 'Link 2: FeO + O₂ --[ 🧩 RADAR GATE ]--> ?', correct: 'Fe₂O₃', options: ['Fe₂O₃', 'Fe₃O₄', 'Fe', 'FeSO₄'] },
+            { prompt: 'Link 3: Fe₂O₃ + 3CO --[ 🧩 SPEED GATE ]--> 2Fe + 3CO₂ (>700°C)', correct: '>700°C', options: ['>700°C', '230-300°C', '400-700°C', 'No Heat'] }
+        ];
+
+        function startParanoiaChainMode() {
+            gameState.paranoiaStage = 0;
+            document.getElementById('paranoiaModal').classList.remove('hidden');
+            document.getElementById('paranoiaModal').classList.add('flex');
+            loadParanoiaChainStep();
+        }
+
+        function loadParanoiaChainStep() {
+            if(gameState.paranoiaStage >= paranoiaChainSteps.length) {
+                closeParanoiaModal();
+                audioFX.playCustomSound('success');
+                gameState.score += 100;
+                document.getElementById('scoreText').innerText = gameState.score;
+                updateRankDisplay();
+                showModal(true, "أسطورة البارانويا وقفلها كلها! 🔥🚆", "لقد اجتزت محطات رادار قطار البارانويا في الوقت المحدد بنجاح مذهل!", "Paranoia Chain Completed (+100 XP)");
+                return;
+            }
+            const step = paranoiaChainSteps[gameState.paranoiaStage];
+            document.getElementById('paranoiaStageText').innerText = `Chain Stage: ${gameState.paranoiaStage + 1} / ${paranoiaChainSteps.length}`;
+            document.getElementById('paranoiaQuestionBox').innerText = step.prompt;
+            const shuffled = [...step.options].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('paranoiaOptionsGrid');
+            grid.innerHTML = shuffled.map(opt => `<button onclick="submitParanoiaAnswer('${opt}', '${step.correct}')" class="bg-red-950/60 hover:bg-red-900 border border-red-500/50 text-white font-black py-3 px-2 rounded-xl text-xs font-gaming shadow">⚡ ${opt}</button>`).join('');
+
+            gameState.timeLeft = 10;
+            document.getElementById('paranoiaTimerText').innerText = `⏱️ ${gameState.timeLeft}s`;
+            if(gameState.paranoiaTimer) clearInterval(gameState.paranoiaTimer);
+            gameState.paranoiaTimer = setInterval(() => {
+                gameState.timeLeft--;
+                document.getElementById('paranoiaTimerText').innerText = `⏱️ ${gameState.timeLeft}s`;
+                if(gameState.timeLeft <= 0) {
+                    clearInterval(gameState.paranoiaTimer);
+                    closeParanoiaModal();
+                    audioFX.playCustomSound('error');
+                    showModal(false, "انفجار القطار! خلص الوقت! 💥", "العداد خلص والقطار خبط في البوابة!", "Train Crash (Timeout)");
+                }
+            }, 1000);
+        }
+
+        function submitParanoiaAnswer(choice, correct) {
+            clearInterval(gameState.paranoiaTimer);
+            if(choice === correct) {
+                audioFX.playCustomSound('success');
+                gameState.score += 25;
+                document.getElementById('scoreText').innerText = gameState.score;
+                gameState.paranoiaStage++;
+                loadParanoiaChainStep();
+            } else {
+                audioFX.playCustomSound('error');
+                closeParanoiaModal();
+                showModal(false, "خطأ في السلسلة! القطر فرقع! ❌", `Correct: ${correct}`, "Train Crash");
+            }
+        }
+
+        function closeParanoiaModal() {
+            if(gameState.paranoiaTimer) clearInterval(gameState.paranoiaTimer);
+            document.getElementById('paranoiaModal').classList.add('hidden');
+            document.getElementById('paranoiaModal').classList.remove('flex');
         }
 
         function updateRankDisplay() {
@@ -612,9 +769,7 @@
             gameState.selectedReactant = symbol;
             document.querySelectorAll('.card-btn').forEach(c => c.classList.remove('fn-card-selected'));
             document.getElementById(`card-${symbol}`).classList.add('fn-card-selected');
-            
-            const slot = document.getElementById('reactantSlot');
-            slot.innerHTML = `<span class="text-xs bg-monorail-orange text-black font-black px-2.5 py-1 rounded-lg font-gaming shadow">St ${stationNum}</span><span class="text-xl font-black text-white font-gaming">${symbol}</span>`;
+            document.getElementById('reactantSlot').innerHTML = `<span class="text-xs bg-monorail-orange text-black font-black px-2.5 py-1 rounded-lg font-gaming shadow">St ${stationNum}</span><span class="text-xl font-black text-white font-gaming">${symbol}</span>`;
             document.getElementById('typeBtns').classList.remove('hidden');
             document.getElementById('predPlaceholder').classList.remove('hidden');
             document.getElementById('predOptions').classList.add('hidden');
@@ -626,9 +781,9 @@
             const container = document.getElementById('agentConfig');
             container.classList.remove('hidden');
             if(type === 'reducing') {
-                container.innerHTML = `<div class="flex gap-2.5"><select id="reagentSel" class="flex-1 bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="CO">CO</option><option value="H2">H₂</option></select><select id="tempSel" class="flex-1 bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="230-300">230-300°C</option><option value="400-700">400-700°C</option><option value=">700">&gt;700°C</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-blue hover:brightness-110 text-black font-black text-xs py-2.5 rounded-xl font-gaming shadow transition-all">Confirm Weapon</button>`;
+                container.innerHTML = `<div class="flex gap-2.5"><select id="reagentSel" class="flex-1 bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="CO">CO</option><option value="H2">H₂</option></select><select id="tempSel" class="flex-1 bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="230-300">230-300°C</option><option value="400-700">400-700°C</option><option value=">700">&gt;700°C</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-blue text-black font-black text-xs py-2.5 rounded-xl">Confirm Weapon</button>`;
             } else {
-                container.innerHTML = `<div class="flex gap-2.5"><select id="reagentSel" class="w-full bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="O2">O₂</option><option value="steam">Steam (500°C)</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-orange hover:brightness-110 text-black font-black text-xs py-2.5 rounded-xl font-gaming shadow transition-all">Confirm Weapon</button>`;
+                container.innerHTML = `<div class="flex gap-2.5"><select id="reagentSel" class="w-full bg-monorail-card border border-monorail-border text-white text-xs rounded-xl p-2.5"><option value="O2">O₂</option><option value="steam">Steam (500°C)</option></select></div><button onclick="confirmAgentConfig()" class="w-full bg-monorail-orange text-black font-black text-xs py-2.5 rounded-xl">Confirm Weapon</button>`;
             }
         }
 
@@ -643,14 +798,11 @@
             const actual = computeChemicalOutcome(gameState.selectedReactant, gameState.agentType, gameState.reagent, gameState.tempRange);
             if(studentChoice === actual.product) {
                 audioFX.playCustomSound('success');
-                
                 gameState.score += 25;
                 document.getElementById('scoreText').innerText = gameState.score;
                 updateRankDisplay();
-
                 triggerFloatingXP(25);
                 updateTrainProgress();
-
                 showModal(true, "عالميييييي وده عكنا! 🔥", actual.explanation, actual.equation);
             } else {
                 audioFX.playCustomSound('error');
@@ -698,7 +850,8 @@
             document.getElementById('trainIcon').style.left = `calc(${percent}% - 12px)`;
             document.getElementById('progressText').innerText = `Progress: ${gameState.progressCount} / 5`;
 
-            if(gameState.progressCount === 5) {
+            if(gameState.progressCount === 5 && !gameState.hasWon) {
+                gameState.hasWon = true;
                 setTimeout(() => {
                     document.getElementById('victoryModal').classList.remove('hidden');
                     document.getElementById('victoryModal').classList.add('flex');
@@ -716,14 +869,6 @@
             document.getElementById('resBanner').className = `text-base font-black mb-3 font-gaming py-2.5 rounded-xl shadow-md ${isSuccess ? 'bg-green-950 text-green-300 border border-green-500/40' : 'bg-red-950 text-red-300 border border-red-500/40'}`;
             document.getElementById('resDesc').innerText = desc;
             document.getElementById('resEquation').innerText = eq;
-            
-            const memeContainer = document.getElementById('memeContainer');
-            if(isSuccess) {
-                memeContainer.innerHTML = `<img src="https://media.giphy.com/media/xT5LMFZDsj0AKUDYTS/giphy.gif" alt="Success Meme" class="w-24 h-24 object-cover rounded-xl border border-green-500/40 shadow">`;
-            } else {
-                memeContainer.innerHTML = `<img src="zizo-fail.jpg" alt="Zizo Fail Meme" class="w-24 h-24 object-cover rounded-xl border border-red-500/40 shadow">`;
-            }
-
             document.getElementById('resultModal').classList.remove('hidden');
             document.getElementById('resultModal').classList.add('flex');
         }
