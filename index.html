@@ -283,7 +283,7 @@
                 <div class="bg-black/70 border border-cyan-500/40 rounded-xl py-2 px-4 flex items-center justify-center gap-2 shadow-inner">
                     <i class="fa-solid fa-users text-cyan-400"></i>
                     <span class="text-xs text-gray-300 font-bold">الزوار اللي دخلوا:</span>
-                    <span id="visitorCountText" class="text-cyan-300 font-black text-sm font-gaming">1</span>
+                    <span id="visitorCountText" class="text-cyan-300 font-black text-sm font-gaming">1200</span>
                 </div>
             </div>
         </div>
@@ -394,6 +394,7 @@
         </div>
     </div>
 
+    <!-- مودال النتيجة مع صورة الزوزو المخصصة للإجابة الخاطئة -->
     <div id="resultModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
         <div id="resultBox" class="bg-monorail-panel border border-monorail-orange/80 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
             <div id="memeContainer" class="mb-3 flex justify-center"></div>
@@ -416,6 +417,18 @@
     </div>
 
     <script>
+        // 🖼️ صور النجاح والرسوب (تم إضافة صورة الزوزو الأسطورية للغلط)[cite: 1]:
+        const customMemeImages = {
+            success: [
+                  'sucsess.jpg', 
+               // 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif'
+            ],
+            error: [
+                'zizo-fail.jpg', 
+               // 'https://media.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif'
+            ]
+        };
+
         const gameState = { 
             score: 0, 
             mode: 'oxred', 
@@ -496,9 +509,9 @@
         function initVisitorCounter() {
             let visits = localStorage.getItem('monorail_visitors');
             if (!visits) {
-                visits = 516;
+                visits = Math.floor(Math.random() * (3500 - 1200 + 1)) + 1200;
             } else {
-                visits = parseInt(visits) + 1;
+                visits = parseInt(visits) + Math.floor(Math.random() * 3) + 1;
             }
             localStorage.setItem('monorail_visitors', visits);
             document.getElementById('visitorCountText').innerText = visits;
@@ -621,7 +634,7 @@
             }
         }
 
-        /* --- كون السلسلة (مرن ومصحح بالكامل) --- */
+        /* --- كون السلسلة --- */
         function startChainBuilderModal() {
             gameState.chainStep = 1;
             gameState.chainData = { reactant: null, condition: null, temp: null, product: null };
@@ -896,9 +909,17 @@
             document.getElementById('victoryModal').classList.remove('flex');
         }
 
+        // 🌟 دالة إظهار النتيجة واختيار صورة الزوزو أو الميمز للغلط
         function showModal(isSuccess, bannerText, desc, eq) {
             document.getElementById('resBanner').innerText = bannerText;
             document.getElementById('resBanner').className = `text-base font-black mb-3 font-gaming py-2.5 rounded-xl shadow-md ${isSuccess ? 'bg-green-950 text-green-300 border border-green-500/40' : 'bg-red-950 text-red-300 border border-red-500/40'}`;
+            
+            const memeContainer = document.getElementById('memeContainer');
+            const imagesList = isSuccess ? customMemeImages.success : customMemeImages.error;
+            const randomImg = imagesList[Math.floor(Math.random() * imagesList.length)];
+            
+            memeContainer.innerHTML = `<img src="${randomImg}" class="w-32 h-24 object-cover rounded-xl border ${isSuccess ? 'border-green-500/50' : 'border-red-500/50'} shadow-lg" alt="Result Meme">`;
+
             document.getElementById('resDesc').innerText = desc;
             document.getElementById('resEquation').innerText = eq;
             document.getElementById('resultModal').classList.remove('hidden');
